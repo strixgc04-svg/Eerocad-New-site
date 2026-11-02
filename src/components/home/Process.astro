@@ -43,7 +43,7 @@ const stages = [
       <div class="rail__line left-0" aria-hidden="true"></div>
       <div class="rail__progress left-0" data-rail-progress aria-hidden="true"></div>
 
-      <ol class="space-y-14 sm:space-y-20">
+      <ol class="space-y-10 sm:space-y-20">
         {
           stages.map((stage) => (
             <li class="relative" data-reveal>
@@ -55,8 +55,7 @@ const stages = [
               </span>
 
               <div
-                class="rounded-3xl border border-border bg-white p-7 sm:p-9"
-                style="box-shadow: var(--shadow-card);"
+                class="card-soft sm:p-9"
               >
                 <p class="font-mono text-xs text-primary tabular-nums">{stage.n}</p>
                 <h3 class="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">

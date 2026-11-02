@@ -479,6 +479,67 @@
   }
 }
 
+/* ===================================================================== *
+ * Card surfaces
+ *
+ * A card is a GRID device. In a two- or three-column layout the box tells
+ * you where one item stops and the next begins. Stacked in a single column
+ * on a phone it does no work at all — it just adds a border, a shadow and
+ * 2rem of padding to every block, and twenty of them in a row read as a
+ * list of boxes rather than as a page.
+ *
+ * So: below 40rem these collapse to plain content separated by a hairline.
+ * From 40rem up, where there is a real grid, they become cards.
+ * ===================================================================== */
+
+/* Text content that only needs a box once it sits in a grid. */
+@utility card-soft {
+  padding-block: 1.5rem;
+
+  @media (width >= 40rem) {
+    padding: 1.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background: var(--paper);
+    box-shadow: var(--shadow-card);
+  }
+}
+
+/* Same, on sections that already sit on --paper-warm. */
+@utility card-soft-warm {
+  padding-block: 1.5rem;
+
+  @media (width >= 40rem) {
+    padding: 1.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background: var(--paper-warm);
+  }
+}
+
+/* A genuine panel: boxed at every size. For things that are a distinct
+   object rather than one item in a list — the booking panel, the contact
+   details, a link preview with its own imagery. */
+@utility card-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--paper);
+  box-shadow: var(--shadow-card);
+}
+
+/* Hairline between stacked items, which disappears once a grid takes over. */
+@utility stack-divide {
+  & > * + * {
+    border-top: 1px solid var(--line);
+  }
+
+  @media (width >= 40rem) {
+    & > * + * {
+      border-top: 0;
+    }
+  }
+}
+
 /* Display type: tight, confident, the main device on a white page. */
 @utility display-xl {
   font-size: clamp(2.75rem, 8vw, 7rem);

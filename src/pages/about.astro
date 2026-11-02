@@ -70,13 +70,12 @@ const howWeWork = [
       How we <span class="accent-italic text-primary">work</span>.
     </h2>
 
-    <ul class="mt-12 grid gap-4 sm:grid-cols-2" data-stagger>
+    <ul class="stack-divide mt-12 grid gap-0 sm:grid-cols-2 sm:gap-4" data-stagger>
       {
         howWeWork.map((item) => (
           <li data-stagger-item>
             <div
-              class="h-full rounded-3xl border border-border bg-white p-7"
-              style="box-shadow: var(--shadow-card);"
+              class="card-soft h-full"
             >
               <h3 class="text-lg font-semibold tracking-tight">{item.title}</h3>
               <p class="mt-3 text-muted-foreground">{item.body}</p>

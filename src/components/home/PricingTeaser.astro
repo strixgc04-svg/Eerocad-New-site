@@ -31,14 +31,13 @@ import Todo from '@/components/Todo.astro';
       </p>
     </div>
 
-    <ul class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-stagger>
+    <ul class="stack-divide mt-14 grid gap-0 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4" data-stagger>
       {
         SERVICES.map((s) => (
           <li data-stagger-item>
             <div
               data-spotlight
-              class="spotlight flex h-full flex-col rounded-3xl border border-border bg-white p-6"
-              style="box-shadow: var(--shadow-card);"
+              class="spotlight card-soft flex h-full flex-col"
             >
               <h3 class="text-sm font-medium text-muted-foreground">{s.name}</h3>
               <p class="mt-5 text-4xl font-semibold tracking-tight">

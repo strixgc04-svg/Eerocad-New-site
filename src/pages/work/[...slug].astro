@@ -45,7 +45,7 @@ const extraGraph = [
   extraGraph={extraGraph}
 >
   <dl
-    class="flex flex-wrap gap-x-12 gap-y-5 rounded-3xl border border-border bg-paper-warm p-7 text-sm"
+    class="flex flex-wrap gap-x-12 gap-y-5 rounded-[var(--radius-xl)] border border-border bg-paper-warm p-7 text-sm"
     data-reveal
   >
     <div>
@@ -72,12 +72,11 @@ const extraGraph = [
 
   {
     entry.data.outcomes.length > 0 && (
-      <ul class="mt-6 grid gap-4 sm:grid-cols-3" data-stagger>
+      <ul class="stack-divide mt-6 grid gap-0 sm:grid-cols-3 sm:gap-4" data-stagger>
         {entry.data.outcomes.map((o) => (
           <li data-stagger-item>
             <div
-              class="h-full rounded-3xl border border-border bg-white p-7"
-              style="box-shadow: var(--shadow-card);"
+              class="card-soft h-full"
             >
               <p class="text-4xl font-semibold tracking-tight text-primary">{o.value}</p>
               <p class="mt-2 font-medium">{o.metric}</p>

@@ -42,8 +42,7 @@ const entries = (await getCollection('work', ({ data }) => !data.draft)).sort(
             {/* Cards are real links. On the current site they go nowhere. */}
             <a
               href={`/work/${entry.id}/`}
-              class="group block h-full rounded-[1.75rem] border border-border bg-white p-7 transition-colors hover:border-primary/40"
-              style="box-shadow: var(--shadow-card);"
+              class="card-panel group block h-full p-7 transition-colors hover:border-primary/40"
             >
               <p class="eyebrow">{entry.data.sector}</p>
               <h2 class="mt-3 text-2xl font-semibold tracking-tight">{entry.data.client}</h2>

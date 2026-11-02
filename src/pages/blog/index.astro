@@ -54,8 +54,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { dateStyle: 'long' });
           <li data-stagger-item>
             <a
               href={`/blog/${post.id}/`}
-              class="group flex h-full flex-col rounded-[1.75rem] border border-border bg-white p-7 transition-colors hover:border-primary/40"
-              style="box-shadow: var(--shadow-card);"
+              class="card-panel group flex h-full flex-col p-7 transition-colors hover:border-primary/40"
             >
               <p class="eyebrow">
                 <time datetime={post.data.pubDate.toISOString()}>

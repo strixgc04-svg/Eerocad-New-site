@@ -45,8 +45,7 @@ const projects = [
   },
 ].map((p) => ({ ...p, live: published.has(p.slug) }));
 
-const cardClass =
-  'block h-full overflow-hidden rounded-[1.75rem] border border-border bg-white p-3';
+const cardClass = 'card-panel block h-full overflow-hidden p-3';
 ---
 
 <section id="work" aria-labelledby="work-heading" class="container-page py-24 sm:py-32">
@@ -126,12 +125,11 @@ const cardClass =
               <a
                 href={`/work/${p.slug}/`}
                 class={`group transition-colors duration-300 hover:border-primary/40 ${cardClass}`}
-                style="box-shadow: var(--shadow-card);"
               >
                 {inner}
               </a>
             ) : (
-              <div class={cardClass} style="box-shadow: var(--shadow-card);">
+              <div class={cardClass}>
                 {inner}
               </div>
             )}

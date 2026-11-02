@@ -67,12 +67,11 @@ const extraGraph = [
 >
   {/* Who it is for / not for. The old site never said no to anyone, which
       reads as desperate and wastes everyone's time on bad-fit calls. */}
-  <section aria-labelledby="fit-heading" class="grid gap-5 lg:grid-cols-2">
+  <section aria-labelledby="fit-heading" class="stack-divide grid gap-0 lg:grid-cols-2 lg:gap-5">
     <h2 id="fit-heading" class="sr-only">Who this is for</h2>
 
     <div
-      class="rounded-3xl border border-border bg-white p-7"
-      style="box-shadow: var(--shadow-card);"
+      class="card-soft"
       data-reveal
     >
       <p class="eyebrow">A good fit if</p>
@@ -88,7 +87,7 @@ const extraGraph = [
       </ul>
     </div>
 
-    <div class="rounded-3xl border border-border bg-paper-warm p-7" data-reveal>
+    <div class="card-soft-warm" data-reveal>
       <p class="eyebrow">Probably not if</p>
       <ul class="mt-5 space-y-3">
         {
@@ -112,14 +111,13 @@ const extraGraph = [
       What's <span class="accent-italic text-primary">included</span>.
     </h2>
 
-    <ul class="mt-12 grid gap-4 sm:grid-cols-2" data-stagger>
+    <ul class="stack-divide mt-12 grid gap-0 sm:grid-cols-2 sm:gap-4" data-stagger>
       {
         content.included.map((item, i) => (
           <li data-stagger-item>
             <div
               data-spotlight
-              class="spotlight flex h-full flex-col rounded-3xl border border-border bg-white p-7"
-              style="box-shadow: var(--shadow-card);"
+              class="spotlight card-soft flex h-full flex-col"
             >
               <span class="font-mono text-xs text-ink-subtle tabular-nums" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
