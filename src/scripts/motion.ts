@@ -130,7 +130,11 @@ mm.add(
 
 /* ------------------------------------------------------- staggered groups */
 
-mm.add(MOTION.ok, () => {
+/*
+ * Wide viewports: items sit side by side in a grid, so the whole group is
+ * visible at once and a single staggered reveal reads as one gesture.
+ */
+mm.add(`${MOTION.ok} and (min-width: 640px)`, () => {
   gsap.utils.toArray<HTMLElement>('[data-stagger]').forEach((group) => {
     const items = group.querySelectorAll('[data-stagger-item]');
     if (!items.length) return;
@@ -142,6 +146,28 @@ mm.add(MOTION.ok, () => {
       ease: EASE,
       stagger: 0.08,
       scrollTrigger: { trigger: group, start: 'top 82%', once: true },
+    });
+  });
+});
+
+/*
+ * Phones: the same group is a tall single column, so a group-level trigger
+ * would animate every item the moment the FIRST one entered — items three
+ * and four would finish long before you scrolled to them, and arrive
+ * already static.
+ *
+ * So each item gets its own trigger, and a little more character than the
+ * desktop version: it lifts and scales up fractionally as it enters.
+ */
+mm.add(`${MOTION.ok} and (max-width: 639px)`, () => {
+  gsap.utils.toArray<HTMLElement>('[data-stagger-item]').forEach((item) => {
+    gsap.from(item, {
+      y: 40,
+      scale: 0.965,
+      opacity: 0,
+      duration: 0.75,
+      ease: EASE,
+      scrollTrigger: { trigger: item, start: 'top 90%', once: true },
     });
   });
 });
@@ -173,24 +199,41 @@ mm.add(MOTION.ok, () => {
 
 /* ------------------------------------------------------------- parallax */
 
-mm.add(`${MOTION.ok} and (min-width: 768px)`, () => {
-  gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((layer) => {
-    gsap.fromTo(
-      layer,
-      { yPercent: -6 },
-      {
-        yPercent: 6,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: layer.closest('li') ?? layer,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
+/*
+ * Parallax inside the card imagery. Runs at every size — on a phone this is
+ * what makes a card feel alive as it travels up the screen, rather than
+ * being a static block that faded in once.
+ *
+ * The range is smaller on phones: the card crosses the viewport far faster
+ * there, so the same offset would read as the image sliding.
+ */
+mm.add(
+  {
+    wide: `${MOTION.ok} and (min-width: 640px)`,
+    narrow: `${MOTION.ok} and (max-width: 639px)`,
+  },
+  (context) => {
+    const { wide } = context.conditions as { wide: boolean };
+    const range = wide ? 6 : 3.5;
+
+    gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((layer) => {
+      gsap.fromTo(
+        layer,
+        { yPercent: -range },
+        {
+          yPercent: range,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: layer.closest('li') ?? layer,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
         },
-      },
-    );
-  });
-});
+      );
+    });
+  },
+);
 
 /* --------------------------------- pointer effects (fine pointers only) */
 
