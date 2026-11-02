@@ -144,6 +144,43 @@ function checkPage(file, html) {
   }
 }
 
+/**
+ * Every internal link must resolve to something that was actually built.
+ *
+ * Added after the home page shipped four hard-coded links to case studies
+ * that existed only as drafts — four 404s, which is precisely the failure
+ * this rebuild exists to fix. A dead internal link should never reach
+ * production again.
+ */
+async function checkInternalLinks(files) {
+  const routes = new Set();
+  for (const file of files) {
+    const rel = '/' + relative(DIST, file).split(sep).join('/');
+    routes.add(rel);
+    routes.add(rel.replace(/index\.html$/, ''));
+  }
+
+  for (const file of files) {
+    const rel = relative(DIST, file).split(sep).join('/');
+    const html = await readFile(file, 'utf8');
+
+    for (const [, href] of all(html, /href="(\/[^"]*)"/g)) {
+      const clean = href.split('#')[0].split('?')[0];
+      if (!clean || routes.has(clean)) continue;
+
+      // Static assets: check the file exists on disk.
+      try {
+        await stat(join(DIST, clean));
+        continue;
+      } catch {
+        /* fall through to the error below */
+      }
+
+      err(rel, `dead internal link: ${href}`);
+    }
+  }
+}
+
 async function main() {
   try {
     await stat(DIST);
@@ -157,6 +194,8 @@ async function main() {
     console.error('No HTML files in dist/.');
     process.exit(1);
   }
+
+  await checkInternalLinks(files);
 
   const titles = new Map();
 
