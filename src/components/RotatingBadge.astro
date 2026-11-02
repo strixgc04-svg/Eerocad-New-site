@@ -13,11 +13,14 @@ const chars = [...text];
 const step = 360 / chars.length;
 ---
 
-{/* Rotating circular badge, as on the Petalwalk reference. Decorative, so the
-    letters are aria-hidden and a real label sits underneath. */}
+{/* Rotating circular badge. Decorative, so the letters are aria-hidden and a
+    real label sits on the link. */}
 <a
   href="/contact/"
-  class:list={['group relative grid size-28 place-items-center sm:size-32', className]}
+  class:list={[
+    'group relative grid size-28 place-items-center [--badge-r:3.05rem] sm:size-32 sm:[--badge-r:3.55rem]',
+    className,
+  ]}
   aria-label="Book a call"
 >
   <span
@@ -27,10 +30,22 @@ const step = 360 / chars.length;
     {
       chars.map((ch, i) => (
         <span
-          class="absolute top-1/2 left-1/2 text-[0.6rem] font-medium tracking-[0.1em] text-muted-foreground"
-          style={`transform: rotate(${i * step}deg) translateY(-3.4rem);`}
+          class="absolute top-1/2 left-1/2 text-[0.6rem] font-medium text-muted-foreground"
+          /*
+           * translate(-50%, -50%) FIRST, so each glyph is centred on the
+           * circle's origin before it is rotated outward.
+           *
+           * Without it the glyph's top-left corner sits on the origin, so
+           * every character is displaced by half its own width — and because
+           * W, & and I differ in width, each is displaced by a different
+           * amount. That is what made the ring look unevenly spaced.
+           *
+           * No letter-spacing here either: on a single character it adds a
+           * trailing space, shifting the glyph off its own centre.
+           */
+          style={`transform: translate(-50%, -50%) rotate(${(i * step).toFixed(3)}deg) translateY(calc(var(--badge-r) * -1));`}
         >
-          {ch}
+          {ch === ' ' ? ' ' : ch}
         </span>
       ))
     }
