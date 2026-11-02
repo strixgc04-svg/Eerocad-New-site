@@ -22,6 +22,10 @@ node_modules/
 npm-debug.log*
 pnpm-debug.log*
 
+# Unsubsetted source fonts. Kept locally so scripts/subset-fonts.mjs can be
+# re-run; only the subset output in public/fonts/ is served and committed.
+fonts-src/
+
 # editor
 .idea/
 *.swp

@@ -1,35 +1,82 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
 import CtaBand from '@/components/CtaBand.astro';
-import Todo from '@/components/Todo.astro';
-import { SERVICES } from '@/lib/schema';
 
 const path = '/pricing/';
-const title = 'Pricing | What a Website or Campaign Costs | Eerocad';
+const title = 'Pricing | How We Quote | Eerocad';
 const description =
-  'Published price bands for websites, SEO, paid media and social media management, so you know roughly what it costs before booking a call.';
+  'How Eerocad prices websites, SEO, paid media and social: fixed scope, a written quote within 48 hours, and no surprises after you sign.';
 
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Pricing', path },
 ];
 
-const principles = [
+const models = [
   {
-    title: 'Fixed scope, fixed price',
-    body: 'Project work is quoted against a written scope. If the scope changes, we re-quote before doing the work rather than after.',
+    n: '01',
+    name: 'Project',
+    shape: 'Fixed scope, fixed price',
+    for: 'A website, a rebuild, a migration.',
+    detail:
+      'Quoted against a written scope before anything starts. If the scope changes, we re-quote rather than absorbing it quietly and resenting it later.',
+    includes: ['Written scope and sitemap', 'Fixed quote', 'Full handover at launch'],
   },
   {
+    n: '02',
+    name: 'Retainer',
+    shape: 'Monthly, rolling',
+    for: 'SEO, paid media, social.',
+    detail:
+      'A set number of days a month against priorities we agree together, reviewed monthly so the work follows what is actually producing.',
+    includes: ['Agreed monthly priorities', 'Monthly reporting', 'Ad spend billed separately'],
+  },
+  {
+    n: '03',
+    name: 'Sprint',
+    shape: 'Two weeks, one outcome',
+    for: 'One specific problem, fast.',
+    detail:
+      'A performance pass, a tracking rebuild, a conversion fix. Useful when you already know what is broken and want it gone.',
+    includes: ['Single defined outcome', 'Two-week window', 'Findings documented'],
+  },
+];
+
+const principles = [
+  {
     title: 'You own what you pay for',
-    body: 'Code, domains, analytics and advertising accounts are yours. They transfer at launch and stay yours if we stop working together.',
+    body: 'Code, domains, analytics and advertising accounts are yours. They transfer at launch and stay yours if we stop working together. Worth asking every agency you speak to, because the answer is not always this one.',
   },
   {
     title: 'Ad spend is separate',
-    body: 'Media spend goes directly to Meta or Google from your own account. Our fee covers the management and is invoiced separately.',
+    body: 'Media spend goes directly to Meta or Google from your own account. Our fee covers management and is invoiced separately, so you can always see what bought what.',
   },
   {
-    title: 'No lock-in on retainers',
-    body: 'TODO: state the actual notice period. UK buyers ask this early, and a vague answer costs you the deal.',
+    title: 'We will say if the numbers do not work',
+    body: 'If your margin cannot support paid acquisition at realistic market rates, we will tell you at the scoping call rather than take a budget and find out together.',
+  },
+  {
+    title: 'No lock-in',
+    body: 'Retainers are rolling and reviewed monthly. If it stops being worth it you stop, and you keep every account and asset.',
+  },
+];
+
+const factors = [
+  {
+    k: 'Templates, not pages',
+    v: 'Forty blog posts are one design. Four distinct page types are four designs. Page count is the least useful way to size a website.',
+  },
+  {
+    k: 'Integrations',
+    v: 'Booking systems, EPOS, CRM, payment gateways, stock feeds. Each is a dependency on someone else’s API, and they are where estimates slip.',
+  },
+  {
+    k: 'Content and photography',
+    v: 'Who writes the copy and sources the images. The most common reason a project runs late is that the content never arrives.',
+  },
+  {
+    k: 'Migration',
+    v: 'If you have an existing site with traffic, mapping old URLs to new ones is not optional. Skipping it is how businesses lose rankings overnight.',
   },
 ];
 ---
@@ -37,48 +84,60 @@ const principles = [
 <PageLayout
   title={title}
   description={description}
-  heading="You should know roughly what this"
-  headingAccent="costs"
-  lead="Before you give anyone half an hour of your time. These are the bands we work in, and how we charge."
+  heading="How we put a"
+  headingAccent="number on it"
+  lead="We quote against a written scope, and you get that quote within 48 hours of a scoping call. Here is how engagements are shaped, and what moves the figure."
   path={path}
   crumbs={crumbs}
 >
-  <section aria-labelledby="bands-heading">
-    <h2 id="bands-heading" class="sr-only">Price bands</h2>
-
-    <ul class="stack-divide grid gap-0 sm:grid-cols-2 sm:gap-4" data-stagger>
-      {
-        SERVICES.map((s) => (
-          <li data-stagger-item>
-            <div
-              data-spotlight
-              class="spotlight card-soft flex h-full flex-col"
-            >
-              <h3 class="text-lg font-semibold tracking-tight">{s.name}</h3>
-              <p class="mt-5 text-4xl font-semibold tracking-tight text-ink-subtle">£TODO</p>
-              <p class="mt-2 text-sm text-muted-foreground">Typical engagement: TODO</p>
-              <a
-                href={`/services/${s.slug}/`}
-                class="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-primary-ink"
-              >
-                What's included <span aria-hidden="true">&rarr;</span>
-              </a>
+  <ul class="stack-divide grid gap-0 lg:grid-cols-3 lg:gap-5" data-stagger>
+    {
+      models.map((m) => (
+        <li data-stagger-item>
+          <div class="card-soft flex h-full flex-col lg:border-t-4 lg:border-t-ink">
+            <div class="flex items-baseline justify-between gap-4">
+              <h2 class="text-2xl font-semibold tracking-tight">{m.name}</h2>
+              <span class="font-mono text-xs text-ink-subtle tabular-nums" aria-hidden="true">
+                {m.n}
+              </span>
             </div>
-          </li>
+            <p class="mt-1 text-sm text-muted-foreground">{m.for}</p>
+            <p class="accent-italic mt-6 text-2xl text-primary">{m.shape}</p>
+            <p class="mt-4 text-sm text-muted-foreground">{m.detail}</p>
+
+            <ul class="mt-6 flex-1 space-y-2 border-t border-border pt-5">
+              {m.includes.map((i) => (
+                <li class="flex gap-3 text-sm text-muted-foreground">
+                  <span class="mt-2 size-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                  {i}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <section aria-labelledby="factors-heading" class="mt-20">
+    <h2 id="factors-heading" class="display-lg max-w-2xl text-balance" data-reveal>
+      What moves the <span class="accent-italic text-primary">figure</span>.
+    </h2>
+
+    <dl class="stack-divide mt-12 grid gap-0 sm:grid-cols-2 sm:gap-x-10 sm:gap-y-8" data-stagger>
+      {
+        factors.map((f) => (
+          <div data-stagger-item class="sm:border-t sm:border-border sm:pt-6">
+            <dt class="text-lg font-medium">{f.k}</dt>
+            <dd class="mt-2 text-muted-foreground">{f.v}</dd>
+          </div>
         ))
       }
-    </ul>
-
-    <div class="mt-8 max-w-2xl" data-reveal>
-      <Todo
-        what="A real band per service, and whether figures exclude VAT"
-        blockedOn="A business decision. This page is also the route to the 'how much does a website cost uk' query cluster."
-      />
-    </div>
+    </dl>
   </section>
 
-  <section aria-labelledby="how-heading" class="mt-20">
-    <h2 id="how-heading" class="display-lg max-w-2xl text-balance" data-reveal>
+  <section aria-labelledby="principles-heading" class="mt-20">
+    <h2 id="principles-heading" class="display-lg max-w-2xl text-balance" data-reveal>
       How we <span class="accent-italic text-primary">charge</span>.
     </h2>
 
@@ -95,6 +154,15 @@ const principles = [
       }
     </ul>
   </section>
+
+  <p class="mt-14 max-w-2xl text-muted-foreground" data-reveal>
+    Want market context before you speak to anyone? We wrote up
+    <a
+      href="/blog/how-much-does-a-website-cost-uk/"
+      class="text-primary-ink underline underline-offset-4"
+      >what a website actually costs in the UK</a
+    >, including the costs most quotes leave out.
+  </p>
 
   <CtaBand heading="Want a number for" accent="your project" />
 </PageLayout>

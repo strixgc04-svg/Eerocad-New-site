@@ -1,7 +1,6 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
 import CtaBand from '@/components/CtaBand.astro';
-import Todo from '@/components/Todo.astro';
 import { getCollection } from 'astro:content';
 import { orgRef, abs, SITE } from '@/lib/schema';
 
@@ -47,7 +46,7 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', { dateStyle: 'long' });
 >
   {
     posts.length === 0 ? (
-      <Todo what="Blog posts in src/content/blog/" blockedOn="Nothing — write them" />
+      <p class="text-muted-foreground">New posts are on the way.</p>
     ) : (
       <ul class="grid gap-5 sm:grid-cols-2" data-stagger>
         {posts.map((post) => (

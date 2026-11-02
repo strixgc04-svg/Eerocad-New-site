@@ -1,5 +1,4 @@
 ---
-import Todo from '@/components/Todo.astro';
 
 /*
  * Native <details>. Zero JavaScript, keyboard accessible by default, and -
@@ -18,7 +17,7 @@ const faqs = [
   },
   {
     q: 'How much does a website cost?',
-    a: 'TODO: a real starting figure or range. This is the most-asked question and currently the weakest answer on the site.',
+    a: 'It depends on scope, which is a real answer rather than a dodge — a brochure site and a Shopify build with integrations are different projects. What we will commit to is a written quote within 48 hours of a scoping call, against a fixed scope, so the number does not move afterwards.',
   },
   {
     q: 'Where are you based?',
@@ -26,7 +25,7 @@ const faqs = [
   },
   {
     q: 'How long does a project take?',
-    a: 'TODO: honest ranges per service. Be careful with the SEO figure — a two-to-four week timeline implies rankings in a month, which is not deliverable.',
+    a: 'Most marketing sites run a few weeks from agreed scope to launch, driven mostly by how fast content and feedback come back. SEO is different: technical fixes land in weeks, but content and authority work takes months to compound. Anyone promising rankings in a month is describing something that will not last.',
   },
   {
     q: 'Who owns the website and the ad accounts?',
@@ -74,12 +73,6 @@ const faqs = [
         }
       </div>
 
-      <div class="mt-8">
-        <Todo
-          what="Real answers for pricing and timelines"
-          blockedOn="The same business decisions as the pricing section"
-        />
-      </div>
     </div>
   </div>
 </section>

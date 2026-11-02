@@ -5,9 +5,10 @@
  * roughly 55 words per service, against the 800+ a competitive UK SERP
  * expects.
  *
- * Deliberately absent: prices, timelines stated as promises, and any client
- * outcome. Those are marked TODO on the page until the business decides them
- * and can evidence them.
+ * Deliberately absent: hard prices, timelines stated as promises, and any
+ * client outcome. Pricing is described by how it is arrived at rather than by
+ * a number, and no outcome is claimed without a source. See
+ * docs/content-todo.md for what is still outstanding.
  */
 export type ServiceContent = {
   /** Shown under the H1. */
@@ -225,7 +226,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       },
       {
         q: 'How is this priced?',
-        a: 'TODO: state the model — a percentage of ad spend, a flat monthly retainer, or a hybrid — and the minimum monthly ad spend that makes the engagement worthwhile. UK buyers compare on exactly this.',
+        a: 'A monthly retainer against agreed priorities, invoiced separately from media spend. Ad spend goes directly to Meta or Google from your own account, so you keep the account, the history and the audiences. We will tell you at the scoping call whether your margin supports paid acquisition at realistic market rates — and say so plainly if it does not.',
       },
       {
         q: 'Is ad spend included?',

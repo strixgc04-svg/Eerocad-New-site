@@ -1,7 +1,6 @@
 ---
 import LogoMarquee from './LogoMarquee.astro';
 import RotatingBadge from '@/components/RotatingBadge.astro';
-import Todo from '@/components/Todo.astro';
 
 /*
  * The LCP element is the <h1>.
@@ -70,43 +69,6 @@ import Todo from '@/components/Todo.astro';
       </div>
 
       <RotatingBadge class="hidden shrink-0 lg:grid" />
-    </div>
-
-    {/*
-      Floating proof chips, the Petalwalk device. Every number here is a
-      placeholder until it has a source and a date range.
-    */}
-    <div data-hero-item class="stack-divide mt-14 grid gap-0 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
-      <div
-        class="card-soft"
-      >
-        <p class="eyebrow">Proof chip</p>
-        <p class="mt-2 text-3xl font-semibold tracking-tight text-ink-subtle">
-          TODO
-        </p>
-        <p class="mt-1 text-sm text-muted-foreground">
-          A real, dated outcome from one client
-        </p>
-      </div>
-
-      <div
-        class="card-soft"
-      >
-        <p class="eyebrow">Response time</p>
-        <p class="mt-2 text-3xl font-semibold tracking-tight text-ink-subtle">
-          TODO
-        </p>
-        <p class="mt-1 text-sm text-muted-foreground">
-          How fast you actually reply to an enquiry
-        </p>
-      </div>
-
-      <div class="sm:col-span-2 lg:col-span-1">
-        <Todo
-          what="Two proof chips and a client count"
-          blockedOn="Verified figures. No statistic ships without a source."
-        />
-      </div>
     </div>
   </div>
 

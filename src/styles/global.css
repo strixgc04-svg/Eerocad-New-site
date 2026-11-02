@@ -17,7 +17,7 @@
 @font-face {
   font-family: 'DM Sans';
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 400 600;
   font-display: swap;
   src: url('/fonts/dm-sans-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
@@ -34,6 +34,31 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
     U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/*
+ * Metric-matched fallback.
+ *
+ * With plain `font-display: swap` the headline first paints in a system font,
+ * then reflows when DM Sans arrives. Because the two have different metrics
+ * the element changes size, and Chrome re-registers the LCP at the later
+ * paint — the home page measured a bimodal 0.8s / 2.6s depending on which
+ * paint won.
+ *
+ * These numbers were measured in-browser, comparing DM Sans against Arial at
+ * the same size: DM Sans renders the same string 93.2% as wide, with a taller
+ * ascent and descent. Scaling Arial by those values makes the swap visually
+ * near-silent, so the first paint is the final one.
+ *
+ * Re-measure if the brand face ever changes.
+ */
+@font-face {
+  font-family: 'DM Sans Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 93.2%;
+  ascent-override: 106.22%;
+  descent-override: 33.26%;
+  line-gap-override: 0%;
 }
 
 /* ===================================================================== *
@@ -53,7 +78,13 @@
 
   --ink: #0a0a0a;
   --ink-muted: #5c5c5c; /* 6.7:1 on white */
-  --ink-subtle: #8a8a8a; /* large text / decorative only */
+  /*
+   * Darkened from #8A8A8A, which measured 3.45:1 on white and failed AA.
+   * It is used on small text — index numerals, year labels, status chips —
+   * so it has to clear 4.5:1. This value is 5.1:1 on white and 4.7:1 on
+   * --paper-warm. "Subtle" cannot mean "unreadable".
+   */
+  --ink-subtle: #6e6e6e;
 
   --paper: #ffffff;
   --paper-warm: #f6f5f2;
@@ -128,7 +159,7 @@
   --shadow-card: var(--shadow-card);
   --shadow-float: var(--shadow-float);
 
-  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'DM Sans', 'DM Sans Fallback', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
 }
 
@@ -261,9 +292,18 @@
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  background-image: radial-gradient(circle at 1px 1px, rgb(10 10 10 / 0.07) 1px, transparent 0);
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    var(--dot-color, rgb(10 10 10 / 0.07)) 1px,
+    transparent 0
+  );
   background-size: 28px 28px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+
+/* Dots have to invert on a dark panel or they disappear. */
+.panel-dark {
+  --dot-color: rgb(255 255 255 / 0.08);
 }
 
 /* ===================================================================== *
@@ -538,6 +578,29 @@
       border-top: 0;
     }
   }
+}
+
+/*
+ * Dark panel.
+ *
+ * Re-points the semantic tokens inside the panel rather than overriding a
+ * dozen utilities at each call site, so `text-muted-foreground` and
+ * `border-border` keep working and simply mean something different in here.
+ *
+ * --brand-red is swapped for the lighter #F4554C: the fill red measures
+ * only 4.02:1 as text on near-black and fails AA. Buttons inside a dark
+ * panel are white-on-ink instead, which is both compliant and better
+ * looking than a red fill on black.
+ */
+@utility panel-dark {
+  background-color: var(--ink);
+  color: #ffffff;
+
+  --muted-foreground: #a3a3a3; /* 7.9:1 on --ink */
+  --border: rgb(255 255 255 / 0.12);
+  --line: rgb(255 255 255 / 0.12);
+  --brand-red: #f4554c; /* 6.0:1 on --ink */
+  --paper-warm: rgb(255 255 255 / 0.06);
 }
 
 /* Display type: tight, confident, the main device on a white page. */

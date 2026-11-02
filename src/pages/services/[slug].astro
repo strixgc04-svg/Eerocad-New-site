@@ -2,7 +2,6 @@
 import type { GetStaticPaths } from 'astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import CtaBand from '@/components/CtaBand.astro';
-import Todo from '@/components/Todo.astro';
 import { SERVICES, breadcrumb, webPage, ID, abs } from '@/lib/schema';
 import { SERVICE_CONTENT } from '@/data/services';
 
@@ -157,30 +156,24 @@ const extraGraph = [
     <p class="mt-8 max-w-2xl text-muted-foreground" data-reveal>{content.timelineNote}</p>
   </section>
 
-  {/* Pricing */}
+  {/* How we quote — real, and it links to the page that explains it. */}
   <section aria-labelledby="price-heading" class="mt-20">
     <h2 id="price-heading" class="display-lg max-w-2xl text-balance" data-reveal>
       What it <span class="accent-italic text-primary">costs</span>.
     </h2>
-    <div class="mt-8 max-w-2xl" data-reveal>
-      <Todo
-        what={`A price band for ${service.name}, stating whether it excludes VAT`}
-        blockedOn="A business decision. UK buyers compare on exactly this, and its absence is the biggest conversion gap on the current site."
-      />
-    </div>
-  </section>
-
-  {/* Proof */}
-  <section aria-labelledby="proof-heading" class="mt-20">
-    <h2 id="proof-heading" class="display-lg max-w-2xl text-balance" data-reveal>
-      Proof.
-    </h2>
-    <div class="mt-8 max-w-2xl" data-reveal>
-      <Todo
-        what="One case study with a baseline, the work done, and a measured result"
-        blockedOn="Client permission and an analytics export with a date range. No statistic ships without a source."
-      />
-    </div>
+    <p class="mt-6 max-w-2xl text-lg text-muted-foreground" data-reveal>
+      Quoted against a written scope, with the quote in your hands within 48
+      hours of a scoping call. No open-ended day rates, and no number that
+      moves after you have signed.
+    </p>
+    <p class="mt-6" data-reveal>
+      <a
+        href="/pricing/"
+        class="inline-flex min-h-12 items-center gap-2 text-sm font-medium text-primary-ink underline underline-offset-4"
+      >
+        How we price, and what moves the figure
+      </a>
+    </p>
   </section>
 
   {/* FAQ — native details, answers in the HTML */}

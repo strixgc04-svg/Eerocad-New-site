@@ -1,6 +1,5 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
-import Todo from '@/components/Todo.astro';
 import RotatingBadge from '@/components/RotatingBadge.astro';
 import { ID } from '@/lib/schema';
 
@@ -73,12 +72,12 @@ const extraGraph = [
         <p class="mt-2 text-muted-foreground">
           Email us instead and we will reply with questions or a rough number.
         </p>
-        <div class="mt-5">
-          <Todo
-            what="A 3-field enquiry form (name, email, what you need) with a stated reply time"
-            blockedOn="Choice of form handler. Build it as a native HTML form that works without JS."
-          />
-        </div>
+        <a
+          href="mailto:info@eerocad.com"
+          class="mt-5 inline-flex min-h-12 items-center rounded-full border border-border px-6 font-medium transition-colors hover:bg-paper-warm"
+        >
+          info@eerocad.com
+        </a>
       </div>
     </div>
 

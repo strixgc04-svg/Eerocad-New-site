@@ -1,7 +1,6 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
 import CtaBand from '@/components/CtaBand.astro';
-import Todo from '@/components/Todo.astro';
 import { getCollection } from 'astro:content';
 
 const path = '/work/';
@@ -31,10 +30,7 @@ const entries = (await getCollection('work', ({ data }) => !data.draft)).sort(
 >
   {
     entries.length === 0 ? (
-      <Todo
-        what="Four case studies in src/content/work/"
-        blockedOn="Rewritten case studies with sourced, dated outcomes and client permission"
-      />
+      <p class="text-muted-foreground">Case studies are being written up. In the meantime, <a href="/contact/" class="text-primary-ink underline underline-offset-4">ask us about relevant work</a>.</p>
     ) : (
       <ul class="grid gap-5 sm:grid-cols-2" data-stagger>
         {entries.map((entry) => (

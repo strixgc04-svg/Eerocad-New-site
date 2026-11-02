@@ -58,14 +58,41 @@ Enforced by review, not tooling — check before merging anything heavy.
 | Metric | Budget | Measured (mobile, production build) |
 | --- | --- | --- |
 | Home page JS | < 90 KB gzipped | **52 KB** |
-| Home page total weight | < 2 MB | **207 KB** |
-| LCP | < 2.5 s | **0.8–1.7 s** |
-| CLS | < 0.1 | **0** |
-| TBT | low | **0 ms** |
-| Hero video, if added | ~0.5 MB, one orientation, poster required | not used |
+| Fonts | — | **45 KB** (subset from 76 KB) |
+| CLS | < 0.1 | **0.001–0.002** |
+| TBT | low | **~0 ms** |
+| LCP, observed | — | **50–330 ms** |
+| LCP, Lighthouse simulated Slow 4G | < 2.5 s | **0.8 s or 2.6 s**, usually 2.6 s |
 
-Lighthouse mobile on the production build: performance 100, accessibility 100,
-best practices 100, SEO 100. Re-run before any release:
+Lighthouse mobile: performance 96–100, accessibility 100, best practices 100,
+SEO 100.
+
+A note on that LCP row, because it looks worse than it is. The *observed* paint
+is 50–330 ms. The 2.6 s figure is Lighthouse's simulated projection onto a
+1.6 Mbps / 150 ms-RTT connection, where the font download gates the headline.
+It sits just over the 2.5 s threshold, so the performance score lands at 96
+rather than 100.
+
+Things already done about it, in order of effect:
+
+- Fonts subset to the character set the site uses: 76 KB -> 45 KB.
+  Re-run `node scripts/subset-fonts.mjs` after changing a source font.
+- A metric-matched fallback (`DM Sans Fallback` in `global.css`), measured
+  against Arial, so the swap barely shifts layout. This is what holds CLS at
+  0.001.
+- The stylesheet is inlined (`build.inlineStylesheets: 'always'`), removing a
+  render-blocking request from the critical path.
+
+Tested and rejected: dropping the font preload. It made no reliable LCP
+difference and pushed CLS from 0.001 to 0.018.
+
+What would actually move it next is a smaller brand face, or accepting the
+fallback font above the fold. Both are design decisions, not code ones. Field
+data from real users is what Google ranks on, and it will reflect real
+connections rather than this projection — check Search Console once there is
+traffic.
+
+Re-run before any release:
 
 ```bash
 pnpm build && pnpm preview --port 4330

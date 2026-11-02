@@ -1,16 +1,54 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
-import Todo from '@/components/Todo.astro';
+import CtaBand from '@/components/CtaBand.astro';
 
 const path = '/industries/restaurants/';
-const title = 'Restaurant Web Design & Marketing Agency | Eerocad';
+const title = 'Restaurant Web Design & Marketing Agency UK | Eerocad';
 const description =
-  'Websites, local SEO and social for restaurants. Booking integrations, menus that work on mobile, and visibility in local search.';
+  'Websites, local SEO and social for UK restaurants. Menus that work on a phone, booking that converts, and a listing people can actually find.';
 
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Industries', path: '/industries/' },
   { name: 'Restaurants', path },
+];
+
+const problems = [
+  {
+    k: 'Your menu is a PDF',
+    v: 'It downloads instead of opening, needs pinch-zooming, and is largely invisible to search. Dish names are search terms — someone looking for a specific dish nearby is about as ready to book as a customer gets.',
+  },
+  {
+    k: 'Your Google listing is doing the work alone',
+    v: 'For "near me" searches the map pack sits above everything. Category, hours, photos and reviews decide whether you appear — and most restaurants set them once and never return.',
+  },
+  {
+    k: 'Booking takes too many taps',
+    v: 'Every step between "I want to eat there" and a confirmed table loses people. A buried booking button and a phone number that is not a real link both cost covers.',
+  },
+];
+
+const work = [
+  {
+    n: '01',
+    title: 'The site',
+    body: 'Menu in HTML, not a PDF. Booking visible without scrolling. A phone number that dials when tapped, and an address that opens maps. Fast on a phone on mobile data, because that is where your customers are.',
+  },
+  {
+    n: '02',
+    title: 'Local search',
+    body: 'Google Business Profile set up properly — primary category, hours including holidays, photos that get refreshed. Consistent name, address and phone everywhere. Restaurant structured data that matches what is on the page.',
+  },
+  {
+    n: '03',
+    title: 'The pages nobody builds',
+    body: 'Private hire and events, dietary requirements, seasonal and set menus. Often the highest-value enquiries a restaurant gets, and usually they have no page at all.',
+  },
+  {
+    n: '04',
+    title: 'Social that looks like the room',
+    body: 'A consistent cadence with real photography of your own food. Stock imagery is obvious and it undercuts a premium room.',
+  },
 ];
 ---
 
@@ -19,26 +57,58 @@ const crumbs = [
   description={description}
   heading="Websites and marketing for"
   headingAccent="restaurants"
-  lead="Menus that work on a phone, booking that actually converts, and a listing people can find."
+  lead="Menus that work on a phone, booking that converts, and a listing people can find at the moment they are deciding where to eat."
   path={path}
   crumbs={crumbs}
 >
-  <div class="max-w-3xl">
-    <Todo
-      what="800-1,200 words of restaurant-specific copy"
-      blockedOn="The Adachi case study, rewritten with sourced outcomes"
-    >
-      <p class="mt-3 text-muted-foreground">
-        This is the strongest organic opportunity in the plan: roughly 40% of
-        results for "web design agency for restaurants" are dedicated restaurant
-        agency pages rather than directories, and there is existing restaurant
-        work to point at. The competing pages lead with a price band, a delivery
-        timeline, and a reservations metric — match that.
-      </p>
-      <p class="mt-3 text-muted-foreground">
-        Resolve the Adachi location question first. The case study says London;
-        the testimonial and the restaurant's own site say Birmingham, Michigan.
-      </p>
-    </Todo>
-  </div>
+  <section aria-labelledby="problems-heading">
+    <h2 id="problems-heading" class="display-lg max-w-2xl text-balance" data-reveal>
+      What usually <span class="accent-italic text-primary">costs you covers</span>.
+    </h2>
+
+    <dl class="stack-divide mt-12 grid gap-0 sm:gap-x-10 sm:gap-y-8 lg:grid-cols-3" data-stagger>
+      {
+        problems.map((p) => (
+          <div data-stagger-item class="lg:border-t lg:border-border lg:pt-6">
+            <dt class="text-lg font-medium">{p.k}</dt>
+            <dd class="mt-2 text-muted-foreground">{p.v}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section aria-labelledby="work-heading" class="mt-20">
+    <h2 id="work-heading" class="display-lg max-w-2xl text-balance" data-reveal>
+      What we <span class="accent-italic text-primary">do about it</span>.
+    </h2>
+
+    <ol class="mt-12 border-t border-border" data-stagger>
+      {
+        work.map((w) => (
+          <li
+            data-stagger-item
+            class="grid gap-3 border-b border-border py-7 sm:grid-cols-[4rem_14rem_1fr] sm:items-baseline sm:gap-8"
+          >
+            <span class="font-mono text-sm text-ink-subtle tabular-nums" aria-hidden="true">
+              {w.n}
+            </span>
+            <h3 class="text-xl font-semibold tracking-tight">{w.title}</h3>
+            <p class="text-muted-foreground">{w.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <p class="mt-14 max-w-2xl text-muted-foreground" data-reveal>
+    We wrote the long version of this as a checklist:
+    <a
+      href="/blog/local-seo-for-uk-restaurants/"
+      class="text-primary-ink underline underline-offset-4"
+      >local SEO for UK restaurants</a
+    >, including the order we would work through it.
+  </p>
+
+  <CtaBand heading="Want more" accent="covers" />
 </PageLayout>

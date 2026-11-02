@@ -1,16 +1,46 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
-import Todo from '@/components/Todo.astro';
+import CtaBand from '@/components/CtaBand.astro';
 
 const path = '/industries/ecommerce-d2c/';
 const title = 'Ecommerce & D2C Agency UK | Eerocad';
 const description =
-  'Shopify storefronts and the Meta and Google campaigns that sell through them, built for UK D2C brands.';
+  'Shopify storefronts and the Meta and Google campaigns that sell through them, built for UK D2C brands with margins that have to work.';
 
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Industries', path: '/industries/' },
   { name: 'Ecommerce & D2C', path },
+];
+
+const work = [
+  {
+    n: '01',
+    title: 'A storefront built to convert',
+    body: 'Shopify, because payments, tax, inventory and PCI compliance are genuinely hard and genuinely boring, and rebuilding them elsewhere is a bad use of money. Fast product pages, a short checkout, and a mobile experience designed first rather than squashed down.',
+  },
+  {
+    n: '02',
+    title: 'Tracking that tells the truth',
+    body: 'Conversions API alongside the pixel, with deduplication, so platform numbers and real sales do not drift apart. GA4 configured to match. Without this, every optimisation decision afterwards is guesswork with a budget attached.',
+  },
+  {
+    n: '03',
+    title: 'Paid media against a real number',
+    body: 'We work out your break-even ROAS from your actual margin before proposing a budget — including VAT, returns and delivery. If the arithmetic does not support paid acquisition, we will say so rather than find out together.',
+  },
+  {
+    n: '04',
+    title: 'Landing pages that match the ad',
+    body: 'A click costs the same whether it lands somewhere relevant or on your homepage. Campaigns and landing pages get built as one thing.',
+  },
+];
+
+const checks = [
+  'Your gross margin, and the break-even ROAS it implies',
+  'Who owns the ad account, pixel and audiences — it should be you',
+  'Whether consent handling is quietly eating your reported conversions',
+  'How fast your product pages load on a phone on mobile data',
 ];
 ---
 
@@ -19,21 +49,58 @@ const crumbs = [
   description={description}
   heading="Ecommerce and"
   headingAccent="D2C"
-  lead="A storefront built to convert, and the paid media to fill it."
+  lead="A storefront built to convert, and the paid media to fill it — with the arithmetic checked before anyone spends anything."
   path={path}
   crumbs={crumbs}
 >
-  <div class="max-w-3xl">
-    <Todo
-      what="800-1,200 words of D2C-specific copy"
-      blockedOn="The Ayunik case study, rewritten with sourced outcomes"
-    >
-      <p class="mt-3 text-muted-foreground">
-        D2C founders on this SERP are looking for provable returns. Include spend,
-        ROAS and CAC against a baseline, and state plainly who owns the ad
-        account. Avoid unverifiable claims — a "20% market share" figure for a
-        clothing brand reads as invented, because it is unmeasurable.
-      </p>
-    </Todo>
-  </div>
+  <section aria-labelledby="work-heading">
+    <h2 id="work-heading" class="display-lg max-w-2xl text-balance" data-reveal>
+      What we <span class="accent-italic text-primary">build</span>.
+    </h2>
+
+    <ol class="mt-12 border-t border-border" data-stagger>
+      {
+        work.map((w) => (
+          <li
+            data-stagger-item
+            class="grid gap-3 border-b border-border py-7 sm:grid-cols-[4rem_15rem_1fr] sm:items-baseline sm:gap-8"
+          >
+            <span class="font-mono text-sm text-ink-subtle tabular-nums" aria-hidden="true">
+              {w.n}
+            </span>
+            <h3 class="text-xl font-semibold tracking-tight">{w.title}</h3>
+            <p class="text-muted-foreground">{w.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section aria-labelledby="checks-heading" class="mt-20">
+    <h2 id="checks-heading" class="display-lg max-w-2xl text-balance" data-reveal>
+      What we check <span class="accent-italic text-primary">first</span>.
+    </h2>
+
+    <ul class="mt-10 max-w-2xl space-y-4" data-stagger>
+      {
+        checks.map((c) => (
+          <li data-stagger-item class="flex gap-4 border-t border-border pt-4 text-muted-foreground">
+            <span class="mt-2.5 size-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+            {c}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <p class="mt-14 max-w-2xl text-muted-foreground" data-reveal>
+    If you are about to brief an agency, our
+    <a
+      href="/blog/meta-ads-agency-uk-what-to-ask/"
+      class="text-primary-ink underline underline-offset-4"
+      >nine questions to ask a UK Meta ads agency</a
+    > covers the ones that matter, including the account ownership question most people forget.
+  </p>
+
+  <CtaBand heading="Want paid media that" accent="actually pays" />
 </PageLayout>

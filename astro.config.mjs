@@ -33,6 +33,14 @@ export default defineConfig({
     }),
   ],
 
+  build: {
+    // The stylesheet is ~9KB gzipped, above Astro's 4KB auto-inline threshold,
+    // so by default it ships as a separate render-blocking request. Inlining
+    // removes a round trip from the critical path, which is what actually
+    // gates first paint here.
+    inlineStylesheets: 'always',
+  },
+
   image: {
     // Tailwind 4 rules have lower precedence than Astro's responsive styles,
     // so leave these off and let Tailwind own sizing.

@@ -1,15 +1,56 @@
 ---
-import { SERVICES } from '@/lib/schema';
-import Todo from '@/components/Todo.astro';
-
 /*
- * The single biggest conversion gap on the current site: "pricing depends on
- * scope, book a consultation" answers nothing, sits 15 screens down, and
- * costs every buyer who needs a budget range first.
+ * Four identical placeholder price cards said nothing and looked like a
+ * template.
  *
- * Bands stay TODO until the business decides them, but the section ships now
- * so the decision has somewhere to land.
+ * Until real bands are published, this section answers the question behind
+ * the question: not "what is the number" but "how will you arrive at it, and
+ * how fast". That is honest, specific, and it removes the objection the old
+ * site's "book a consultation for a quote" left standing.
+ *
+ * When bands are agreed they drop straight into `models` below.
  */
+const models = [
+  {
+    n: '01',
+    name: 'Project',
+    for: 'A website, a rebuild, a migration.',
+    shape: 'Fixed scope, fixed price',
+    detail:
+      'Quoted against a written scope before anything starts. If the scope changes we re-quote, rather than absorbing it quietly and resenting it later.',
+  },
+  {
+    n: '02',
+    name: 'Retainer',
+    for: 'SEO, paid media, social.',
+    shape: 'Monthly, rolling',
+    detail:
+      'A set number of days a month against agreed priorities. Ad spend is separate and goes directly to the platform from your own account.',
+  },
+  {
+    n: '03',
+    name: 'Sprint',
+    for: 'One specific problem, fast.',
+    shape: 'Two weeks, one outcome',
+    detail:
+      'A performance pass, a tracking rebuild, a conversion fix. Useful when you know exactly what is broken and want it gone.',
+  },
+];
+
+const factors = [
+  {
+    k: 'Templates',
+    v: 'Not page count. Forty blog posts are one design; four page types are four.',
+  },
+  {
+    k: 'Integrations',
+    v: 'Booking, EPOS, CRM, payments. Each is a dependency on someone else’s API.',
+  },
+  {
+    k: 'Content',
+    v: 'Who writes the copy and sources the photography. The usual reason projects slip.',
+  },
+];
 ---
 
 <section
@@ -18,52 +59,85 @@ import Todo from '@/components/Todo.astro';
   class="border-y border-border bg-paper-warm py-24 sm:py-32"
 >
   <div class="container-page">
-    <div class="max-w-2xl" data-reveal>
-      <p class="eyebrow">Pricing</p>
-      <h2 id="pricing-heading" class="display-lg mt-5 text-balance">
-        You should know roughly what this <span class="accent-italic text-primary"
-          >costs</span
-        >.
-      </h2>
-      <p class="mt-5 text-lg text-muted-foreground">
-        Before you give anyone half an hour of your time. Here are the bands we
-        work in.
+    <div class="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end" data-reveal>
+      <div class="max-w-2xl">
+        <p class="eyebrow">Pricing</p>
+        <h2 id="pricing-heading" class="display-lg mt-5 text-balance">
+          How we put a <span class="accent-italic text-primary">number</span> on it.
+        </h2>
+        <p class="mt-5 text-lg text-muted-foreground">
+          Three ways to work with us. Which one fits depends on whether you have
+          a project, an ongoing need, or one specific thing that is broken.
+        </p>
+      </div>
+
+      {/* The real differentiator, and it costs nothing to promise. */}
+      <p
+        class="inline-flex items-center gap-3 self-start rounded-full border border-border bg-white px-5 py-3 text-sm font-medium lg:self-end"
+      >
+        <span class="size-1.5 rounded-full bg-primary" aria-hidden="true"></span>
+        Written quote within 48 hours of a scoping call
       </p>
     </div>
 
-    <ul class="stack-divide mt-14 grid gap-0 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4" data-stagger>
+    <ul class="stack-divide mt-16 grid gap-0 lg:grid-cols-3 lg:gap-5" data-stagger>
       {
-        SERVICES.map((s) => (
+        models.map((m) => (
           <li data-stagger-item>
             <div
               data-spotlight
-              class="spotlight card-soft flex h-full flex-col"
+              class="spotlight card-soft flex h-full flex-col lg:border-t-4 lg:border-t-ink"
             >
-              <h3 class="text-sm font-medium text-muted-foreground">{s.name}</h3>
-              <p class="mt-5 text-4xl font-semibold tracking-tight">
-                <span class="text-ink-subtle">£TODO</span>
-              </p>
-              <p class="mt-2 text-xs text-muted-foreground">Typical engagement: TODO</p>
+              <div class="flex items-baseline justify-between gap-4">
+                <h3 class="text-2xl font-semibold tracking-tight">{m.name}</h3>
+                <span class="font-mono text-xs text-ink-subtle tabular-nums" aria-hidden="true">
+                  {m.n}
+                </span>
+              </div>
+
+              <p class="mt-1 text-sm text-muted-foreground">{m.for}</p>
+
+              <p class="accent-italic mt-6 text-2xl text-primary">{m.shape}</p>
+
+              <p class="mt-4 flex-1 text-sm text-muted-foreground">{m.detail}</p>
             </div>
           </li>
         ))
       }
     </ul>
 
-    <div class="mt-10 flex flex-wrap items-center gap-6" data-reveal>
-      <a
-        href="/pricing/"
-        class="inline-flex min-h-12 items-center gap-2 rounded-full bg-ink px-6 font-medium text-white transition-colors hover:bg-primary"
-      >
-        Full pricing detail <span aria-hidden="true">&rarr;</span>
-      </a>
+    {/* What actually moves the number — the useful half of a pricing page. */}
+    <div class="mt-16" data-reveal>
+      <p class="eyebrow">What moves the number</p>
+      <dl class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-3">
+        {
+          factors.map((f) => (
+            <div class="border-t border-border pt-5">
+              <dt class="font-medium">{f.k}</dt>
+              <dd class="mt-2 text-sm text-muted-foreground">{f.v}</dd>
+            </div>
+          ))
+        }
+      </dl>
     </div>
 
-    <div class="mt-10 max-w-2xl" data-reveal>
-      <Todo
-        what="Price bands per service, stating whether figures exclude VAT"
-        blockedOn="A business decision. This also unlocks the 'how much does a website cost uk' query cluster."
-      />
+    <div class="mt-12 flex flex-wrap items-center gap-4" data-reveal>
+      <a
+        href="/pricing/"
+        class="group inline-flex min-h-12 items-center gap-2 rounded-full bg-ink px-6 font-medium text-white transition-colors hover:bg-primary"
+      >
+        Full pricing detail
+        <span
+          class="transition-transform duration-300 group-hover:translate-x-1"
+          aria-hidden="true">&rarr;</span
+        >
+      </a>
+      <a
+        href="/blog/how-much-does-a-website-cost-uk/"
+        class="inline-flex min-h-12 items-center text-sm font-medium text-primary-ink underline underline-offset-4"
+      >
+        What a website costs in the UK
+      </a>
     </div>
   </div>
 </section>

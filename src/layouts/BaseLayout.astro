@@ -31,7 +31,14 @@ const { title, description, image, noindex, type, graph = [], intro = false } =
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    {/* Self-hosted, same-origin, so no third-party round trip before text. */}
+    {/*
+      Self-hosted and same-origin, so no third-party round trip before text.
+
+      Preloaded deliberately: tested without it and CLS rose from 0.001 to
+      0.018, because the metric-matched fallback is close but not exact and
+      the swap still nudges layout. CLS is a real user-facing metric, so it
+      wins over a simulated LCP figure.
+    */}
     <link
       rel="preload"
       href="/fonts/dm-sans-latin.woff2"

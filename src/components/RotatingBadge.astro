@@ -2,12 +2,20 @@
 interface Props {
   text?: string;
   class?: string;
+  /** On a dark panel the centre disc inverts to white. */
+  tone?: 'light' | 'dark';
 }
 
 const {
   text = 'BOOK A CALL · NO DECK · NO PRESSURE · ',
   class: className,
+  tone = 'light',
 } = Astro.props;
+
+const disc =
+  tone === 'dark'
+    ? 'bg-white text-ink group-hover:bg-primary group-hover:text-white'
+    : 'bg-ink text-white group-hover:bg-primary';
 
 const chars = [...text];
 const step = 360 / chars.length;
@@ -52,7 +60,10 @@ const step = 360 / chars.length;
   </span>
 
   <span
-    class="grid size-16 place-items-center rounded-full bg-ink text-white transition-colors group-hover:bg-primary sm:size-18"
+    class:list={[
+      'grid size-16 place-items-center rounded-full transition-colors sm:size-18',
+      disc,
+    ]}
     aria-hidden="true"
   >
     <svg
