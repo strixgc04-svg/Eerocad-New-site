@@ -1,0 +1,28 @@
+---
+/**
+ * Visible build-time placeholder.
+ *
+ * Deliberately loud. The old site shipped an empty "Meet the Team" section and
+ * live template copy ("Effortlessly connect with your favorite tools..."). A
+ * placeholder that looks like content is how that happens.
+ *
+ * `pnpm run build:strict` fails if any of these reach dist/.
+ */
+interface Props {
+  what: string;
+  blockedOn?: string;
+}
+
+const { what, blockedOn } = Astro.props;
+---
+
+<div
+  data-todo
+  {/* Warm neutral, not the red wash: red text on --brand-red-wash measures
+      4.36:1 and fails AA. On --paper-warm the same red is 4.62:1. */}
+  class="rounded-2xl border border-dashed border-primary/40 bg-paper-warm p-5 text-sm"
+>
+  <p class="font-medium text-primary-ink">Content needed: {what}</p>
+  {blockedOn && <p class="mt-1.5 text-muted-foreground">Blocked on: {blockedOn}</p>}
+  <slot />
+</div>

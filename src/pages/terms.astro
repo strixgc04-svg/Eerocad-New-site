@@ -1,0 +1,51 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Todo from '@/components/Todo.astro';
+
+const path = '/terms/';
+const title = 'Terms & Conditions | Eerocad';
+const description =
+  'The terms on which Eerocad provides website development, SEO, paid media and social media services.';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Terms & Conditions', path },
+];
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  heading="Terms &"
+  headingAccent="Conditions"
+  path={path}
+  crumbs={crumbs}
+>
+  <div class="max-w-2xl">
+    <Todo
+      what="Terms written from scratch"
+      blockedOn="Legal review, and deciding the contracting entity"
+    >
+      <p class="mt-3 text-muted-foreground">
+        There is nothing to migrate: the current Terms page is empty, and its
+        heading reads "Contact Us".
+      </p>
+      <ul class="mt-3 list-disc space-y-1 pl-5 text-muted-foreground">
+        <li>The contracting legal entity, governing law and jurisdiction</li>
+        <li>Scope and change control</li>
+        <li>
+          Fair-use limits on the "unlimited requests" promise — or drop the
+          promise
+        </li>
+        <li>Payment terms, and who owns the IP and from when</li>
+        <li>Ad-spend handling and platform account ownership</li>
+        <li>SEO and results disclaimers</li>
+        <li>Termination, refunds and confidentiality</li>
+      </ul>
+      <p class="mt-3 text-muted-foreground">
+        Have a solicitor review this. Do not ship a generator template — that is
+        how the current privacy policy ended up pointing at someone else's domain.
+      </p>
+    </Todo>
+  </div>
+</PageLayout>

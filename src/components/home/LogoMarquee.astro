@@ -1,0 +1,68 @@
+---
+/*
+ * Client logos.
+ *
+ * Already public on the current site, so the relationships are not secret -
+ * but get written permission before launch. Two of the six (NP Coaches,
+ * 20Six Media) have no case study behind them.
+ *
+ * The duplicate track is aria-hidden and inert, so screen readers and agents
+ * see each logo once. The old site cloned its marquee 4-5 times into the
+ * accessible tree.
+ *
+ * The source PNGs are white-on-transparent (built for a dark site), so they
+ * are inverted here to read on white.
+ */
+const logos = [
+  { src: '/brand/clients/adachi.png', name: 'Adachi Restaurant' },
+  { src: '/brand/clients/dhillon-of-london.png', name: 'Dhillon of London' },
+  { src: '/brand/clients/ayunik.png', name: 'Ayunik Clothing' },
+  { src: '/brand/clients/escalate.png', name: 'Escalate Digital' },
+  { src: '/brand/clients/np-coaches.png', name: 'NP Coaches' },
+  { src: '/brand/clients/20six-media.png', name: '20Six Media' },
+];
+
+const imgClass =
+  'h-8 w-auto max-w-[8.5rem] object-contain opacity-45 invert transition-opacity duration-300 hover:opacity-80';
+---
+
+<div class="container-page">
+  <p class="eyebrow mb-7">Trusted by</p>
+</div>
+
+<div class="marquee" style="--marquee-duration: 46s;">
+  <ul class="marquee__track list-none">
+    {
+      logos.map((logo) => (
+        <li class="flex-none">
+          <img
+            src={logo.src}
+            alt={logo.name}
+            width="136"
+            height="40"
+            loading="lazy"
+            decoding="async"
+            class={imgClass}
+          />
+        </li>
+      ))
+    }
+  </ul>
+  <ul class="marquee__track list-none" aria-hidden="true" inert>
+    {
+      logos.map((logo) => (
+        <li class="flex-none">
+          <img
+            src={logo.src}
+            alt=""
+            width="136"
+            height="40"
+            loading="lazy"
+            decoding="async"
+            class={imgClass}
+          />
+        </li>
+      ))
+    }
+  </ul>
+</div>

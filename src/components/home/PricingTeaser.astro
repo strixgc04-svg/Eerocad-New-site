@@ -1,0 +1,70 @@
+---
+import { SERVICES } from '@/lib/schema';
+import Todo from '@/components/Todo.astro';
+
+/*
+ * The single biggest conversion gap on the current site: "pricing depends on
+ * scope, book a consultation" answers nothing, sits 15 screens down, and
+ * costs every buyer who needs a budget range first.
+ *
+ * Bands stay TODO until the business decides them, but the section ships now
+ * so the decision has somewhere to land.
+ */
+---
+
+<section
+  id="pricing"
+  aria-labelledby="pricing-heading"
+  class="border-y border-border bg-paper-warm py-24 sm:py-32"
+>
+  <div class="container-page">
+    <div class="max-w-2xl" data-reveal>
+      <p class="eyebrow">Pricing</p>
+      <h2 id="pricing-heading" class="display-lg mt-5 text-balance">
+        You should know roughly what this <span class="accent-italic text-primary"
+          >costs</span
+        >.
+      </h2>
+      <p class="mt-5 text-lg text-muted-foreground">
+        Before you give anyone half an hour of your time. Here are the bands we
+        work in.
+      </p>
+    </div>
+
+    <ul class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-stagger>
+      {
+        SERVICES.map((s) => (
+          <li data-stagger-item>
+            <div
+              data-spotlight
+              class="spotlight flex h-full flex-col rounded-3xl border border-border bg-white p-6"
+              style="box-shadow: var(--shadow-card);"
+            >
+              <h3 class="text-sm font-medium text-muted-foreground">{s.name}</h3>
+              <p class="mt-5 text-4xl font-semibold tracking-tight">
+                <span class="text-ink-subtle">£TODO</span>
+              </p>
+              <p class="mt-2 text-xs text-muted-foreground">Typical engagement: TODO</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-10 flex flex-wrap items-center gap-6" data-reveal>
+      <a
+        href="/pricing/"
+        class="inline-flex min-h-12 items-center gap-2 rounded-full bg-ink px-6 font-medium text-white transition-colors hover:bg-primary"
+      >
+        Full pricing detail <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+
+    <div class="mt-10 max-w-2xl" data-reveal>
+      <Todo
+        what="Price bands per service, stating whether figures exclude VAT"
+        blockedOn="A business decision. This also unlocks the 'how much does a website cost uk' query cluster."
+      />
+    </div>
+  </div>
+</section>

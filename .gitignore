@@ -1,0 +1,46 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# generated types
+.vercel/
+.netlify/
+
+# environment
+.env
+.env.production
+.env.local
+
+# macOS
+.DS_Store
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# editor
+.idea/
+*.swp
+
+# ---------------------------------------------------------------------------
+# Deliberately excluded from this PUBLIC repository.
+# Paths are anchored with a leading slash so src/content/ (the blog) is NOT
+# affected — only the research folders at the repo root.
+#
+# /content/ is the capture of the previous Framer site: ~44MB of imagery and
+# video (much of it stock, licensed for that site rather than for
+# redistribution) plus a defect list written for internal use. The client
+# logos the new site actually needs live in public/brand/ and are committed.
+#
+# /docs/ holds the internal SEO audit and build plan. They candidly document
+# gaps in the business — no Companies House registration, unsourced
+# statistics, a broken booking link — and are not written for publication.
+#
+# Delete either line if you want them public.
+# ---------------------------------------------------------------------------
+/content/
+/docs/

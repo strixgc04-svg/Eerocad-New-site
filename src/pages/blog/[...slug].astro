@@ -1,0 +1,122 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { breadcrumb, blogPosting } from '@/lib/schema';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+const path = `/blog/${post.id}/`;
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Blog', path: '/blog/' },
+  { name: post.data.title, path },
+];
+
+const graph = [
+  blogPosting({
+    path,
+    title: post.data.title,
+    description: post.data.description,
+    pubDate: post.data.pubDate,
+    updatedDate: post.data.updatedDate,
+    author: post.data.author,
+    tags: post.data.tags,
+  }),
+  breadcrumb(path, crumbs),
+];
+
+const dateFmt = new Intl.DateTimeFormat('en-GB', { dateStyle: 'long' });
+const toc = headings.filter((h) => h.depth === 2);
+---
+
+<BaseLayout
+  title={`${post.data.title} | Eerocad`}
+  description={post.data.description}
+  type="article"
+  graph={graph}
+>
+  <section class="dotgrid relative isolate overflow-hidden pt-28 pb-6 sm:pt-32">
+    <div class="wash" aria-hidden="true">
+      <div class="wash__blob wash__blob--1"></div>
+    </div>
+
+    <div class="relative">
+      <Breadcrumbs crumbs={crumbs} />
+
+      <div class="container-page pt-8">
+        <article>
+          <h1 class="display-lg max-w-4xl text-balance">{post.data.title}</h1>
+
+          {/* Byline and dates on every post. The old site had neither anywhere. */}
+          <p class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+            <span>By {post.data.author?.name ?? 'Eerocad'}</span>
+            <span aria-hidden="true">·</span>
+            <time datetime={post.data.pubDate.toISOString()}>
+              {dateFmt.format(post.data.pubDate)}
+            </time>
+            {
+              post.data.updatedDate && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span>
+                    Updated{' '}
+                    <time datetime={post.data.updatedDate.toISOString()}>
+                      {dateFmt.format(post.data.updatedDate)}
+                    </time>
+                  </span>
+                </>
+              )
+            }
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="container-page pb-16 sm:pb-24">
+    <div class="grid gap-12 lg:grid-cols-[1fr_16rem] lg:items-start">
+      <div class="prose-page max-w-2xl">
+        <Content />
+      </div>
+
+      {
+        toc.length > 2 && (
+          <nav
+            aria-labelledby="toc-heading"
+            class="top-28 order-first rounded-3xl border border-border bg-paper-warm p-6 lg:sticky lg:order-last"
+          >
+            <h2 id="toc-heading" class="eyebrow">
+              On this page
+            </h2>
+            <ul class="mt-4 space-y-1">
+              {toc.map((h) => (
+                <li>
+                  <a
+                    href={`#${h.slug}`}
+                    class="flex min-h-10 items-center text-sm text-muted-foreground transition-colors hover:text-ink"
+                  >
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+    </div>
+
+    <CtaBand heading="Want this done for" accent="your business" />
+  </div>
+</BaseLayout>

@@ -1,0 +1,84 @@
+---
+import { SERVICES } from '@/lib/schema';
+
+const detail: Record<string, { outcome: string; stack: string }> = {
+  'web-design-development': {
+    outcome: 'A site built to convert, not just to look good.',
+    stack: 'Shopify · WordPress · Astro · React',
+  },
+  seo: {
+    outcome: 'Visibility that compounds instead of stopping when you stop paying.',
+    stack: 'Technical · On-page · Content · Digital PR',
+  },
+  'performance-marketing': {
+    outcome: 'Spend that is accountable to a number you agreed up front.',
+    stack: 'Meta Ads · Google Ads · Funnels · CRO',
+  },
+  'social-media-management': {
+    outcome: 'A presence that looks like the business you actually are.',
+    stack: 'Strategy · Content · Community',
+  },
+};
+---
+
+{/* Numbered row list, the Otherthing device. Reads as a contents page rather
+    than a grid of identical boxes. */}
+<section id="services" aria-labelledby="services-heading" class="container-page py-24 sm:py-32">
+  <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+    <div class="max-w-2xl">
+      <p class="eyebrow">What we do</p>
+      <h2 id="services-heading" class="display-lg mt-5 text-balance">
+        Four things, done <span class="accent-italic text-primary">properly</span>.
+      </h2>
+    </div>
+    <p class="max-w-sm text-muted-foreground">
+      Each has its own page, because each is a different decision with a
+      different budget.
+    </p>
+  </div>
+
+  <ul class="mt-16 border-t border-border" data-stagger>
+    {
+      SERVICES.map((s, i) => (
+        <li data-stagger-item class="border-b border-border">
+          <a
+            href={`/services/${s.slug}/`}
+            data-spotlight
+            class="spotlight group grid gap-4 py-8 transition-colors sm:grid-cols-[4rem_1fr_auto] sm:items-baseline sm:gap-8 sm:py-10"
+          >
+            <span class="font-mono text-sm text-ink-subtle tabular-nums" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+
+            <div class="max-w-2xl">
+              <h3 class="text-2xl font-semibold tracking-tight transition-transform duration-500 group-hover:translate-x-1 sm:text-4xl">
+                {s.name}
+              </h3>
+              <p class="mt-3 text-muted-foreground">{detail[s.slug]?.outcome}</p>
+              <p class="eyebrow mt-4">{detail[s.slug]?.stack}</p>
+            </div>
+
+            <span
+              class="inline-flex size-11 items-center justify-center rounded-full border border-border transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-white"
+              aria-hidden="true"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

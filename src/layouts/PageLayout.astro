@@ -1,0 +1,63 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { breadcrumb, webPage, type Crumb } from '@/lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  /** Rendered in the accent italic face. Appended to the heading. */
+  headingAccent?: string;
+  lead?: string;
+  path: string;
+  crumbs: Crumb[];
+  pageType?: 'WebPage' | 'AboutPage' | 'ContactPage' | 'CollectionPage';
+  noindex?: boolean;
+  extraGraph?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  heading,
+  headingAccent,
+  lead,
+  path,
+  crumbs,
+  pageType = 'WebPage',
+  noindex,
+  extraGraph = [],
+} = Astro.props;
+
+const graph = [
+  webPage({ type: pageType, path, name: title, description, hasBreadcrumb: true }),
+  breadcrumb(path, crumbs),
+  ...extraGraph,
+];
+---
+
+<BaseLayout title={title} description={description} graph={graph} noindex={noindex}>
+  {/* The header is fixed, so every page opens with its own clearance. */}
+  <section class="dotgrid relative isolate overflow-hidden pt-28 pb-6 sm:pt-32">
+    <div class="wash" aria-hidden="true">
+      <div class="wash__blob wash__blob--1"></div>
+    </div>
+
+    <div class="relative">
+      <Breadcrumbs crumbs={crumbs} />
+
+      <div class="container-page pt-8">
+        <h1 class="display-lg max-w-4xl text-balance">
+          {heading}{' '}
+          {headingAccent && <span class="accent-italic text-primary">{headingAccent}</span>}
+        </h1>
+        {lead && <p class="mt-6 max-w-2xl text-lg text-muted-foreground">{lead}</p>}
+      </div>
+    </div>
+  </section>
+
+  <div class="container-page pt-10 pb-16 sm:pb-24">
+    <slot />
+  </div>
+</BaseLayout>

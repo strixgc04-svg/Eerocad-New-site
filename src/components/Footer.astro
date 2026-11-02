@@ -1,0 +1,129 @@
+---
+import { SERVICES } from '@/lib/schema';
+import RotatingBadge from '@/components/RotatingBadge.astro';
+
+const year = new Date().getFullYear();
+---
+
+{/* Floating rounded panel, matching the closing CTA block. */}
+<footer class="container-page pt-16 pb-5">
+  <div
+    class="dotgrid relative isolate overflow-hidden rounded-[2.5rem] border border-border bg-paper-warm px-6 py-14 sm:px-10 sm:py-16"
+  >
+    <div class="wash" aria-hidden="true">
+      <div class="wash__blob wash__blob--2"></div>
+    </div>
+
+    <div class="relative grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <div>
+        <div class="flex items-center gap-2 font-semibold tracking-tight">
+          <span class="inline-block h-2 w-6 rounded-full bg-primary" aria-hidden="true"></span>
+          <span class="text-lg">Eerocad</span>
+        </div>
+        <p class="mt-4 max-w-xs text-sm text-muted-foreground">
+          A remote-first digital studio serving businesses across the United
+          Kingdom.
+        </p>
+
+        <div class="mt-8 hidden sm:block">
+          <RotatingBadge text="EEROCAD · UK WEB & GROWTH STUDIO · " />
+        </div>
+      </div>
+
+      <nav aria-label="Services">
+        <h2 class="eyebrow">Services</h2>
+        <ul class="mt-4 space-y-0.5">
+          {
+            SERVICES.map((s) => (
+              <li>
+                <a
+                  href={`/services/${s.slug}/`}
+                  class="flex min-h-11 items-center text-sm text-muted-foreground transition-colors hover:text-ink"
+                >
+                  {s.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav aria-label="Company">
+        <h2 class="eyebrow">Company</h2>
+        <ul class="mt-4 space-y-0.5">
+          {
+            [
+              { href: '/work/', label: 'Work' },
+              { href: '/pricing/', label: 'Pricing' },
+              { href: '/about/', label: 'About' },
+              { href: '/blog/', label: 'Blog' },
+              { href: '/contact/', label: 'Contact' },
+            ].map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="flex min-h-11 items-center text-sm text-muted-foreground transition-colors hover:text-ink"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      {/* Contact details on every page. The old site had none here, and its
+          only copy sat on a page that returned 404. */}
+      <div>
+        <h2 class="eyebrow">Contact</h2>
+        <ul class="mt-4 space-y-0.5">
+          <li>
+            <a
+              href="mailto:info@eerocad.com"
+              class="flex min-h-11 items-center text-sm text-muted-foreground transition-colors hover:text-ink"
+            >
+              info@eerocad.com
+            </a>
+          </li>
+          <li>
+            {/* href must match the number shown. The old site displayed UK and
+                India numbers but dialled tel:+1 988636474 on both. */}
+            <a
+              href="tel:+447405327656"
+              class="flex min-h-11 items-center text-sm text-muted-foreground transition-colors hover:text-ink"
+            >
+              +44 7405 327656
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.instagram.com/eerocad"
+              rel="me noopener"
+              class="flex min-h-11 items-center text-sm text-muted-foreground transition-colors hover:text-ink"
+            >
+              Instagram
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="relative mt-12 flex flex-col gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
+    >
+      {/* Blocking, see docs/build-plan.md §7: add the registered company name,
+          number, place of registration and registered office here. There is
+          currently no "Eerocad" at Companies House, and UK trading disclosure
+          rules generally require these details on the website. */}
+      <p>&copy; {year} Eerocad. All rights reserved.</p>
+      <div class="flex gap-5">
+        <a href="/privacy-policy/" class="inline-flex min-h-11 items-center hover:text-ink">
+          Privacy Policy
+        </a>
+        <a href="/terms/" class="inline-flex min-h-11 items-center hover:text-ink">
+          Terms &amp; Conditions
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

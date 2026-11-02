@@ -1,0 +1,32 @@
+---
+interface Props {
+  /** Required: every section gets an accessible name. */
+  heading: string;
+  eyebrow?: string;
+  lead?: string;
+  id?: string;
+  as?: 'h2' | 'h3';
+  class?: string;
+}
+
+const { heading, eyebrow, lead, id, as: Tag = 'h2', class: className } = Astro.props;
+const headingId = id ? `${id}-heading` : undefined;
+---
+
+<section
+  id={id}
+  aria-labelledby={headingId}
+  class:list={['container-page py-24 sm:py-32', className]}
+>
+  <div data-reveal class="max-w-2xl">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <Tag id={headingId} class="display-lg mt-5 text-balance">
+      {heading}
+    </Tag>
+    {lead && <p class="mt-5 text-lg text-muted-foreground">{lead}</p>}
+  </div>
+
+  <div class="mt-14">
+    <slot />
+  </div>
+</section>

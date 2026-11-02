@@ -1,0 +1,118 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Todo from '@/components/Todo.astro';
+import { ID } from '@/lib/schema';
+
+const path = '/about/';
+const title = 'About Eerocad | UK Web & Growth Studio';
+const description =
+  'Who Eerocad is, how the studio works across the UK and New Delhi, and the people you will actually be working with.';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path },
+];
+
+const extraGraph = [
+  {
+    '@type': 'AboutPage',
+    '@id': `https://eerocad.com${path}#aboutpage`,
+    mainEntity: { '@id': ID.org },
+  },
+];
+
+const howWeWork = [
+  {
+    title: 'UK-led',
+    body: 'Your account lead is UK-hours and is the person you speak to. You are not passed between account managers.',
+  },
+  {
+    title: 'A delivery team in New Delhi',
+    body: 'Design and build capacity sits with our team in New Delhi, with roughly four hours of working overlap with the UK each day.',
+  },
+  {
+    title: 'Written before built',
+    body: 'Scope, price and timeline are agreed in writing before work starts. Changes get re-quoted rather than absorbed silently and resented later.',
+  },
+  {
+    title: 'You own the output',
+    body: 'Code, domains, analytics and advertising accounts transfer to you at launch and remain yours regardless of what happens next.',
+  },
+];
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  heading="A small studio that does the"
+  headingAccent="work itself"
+  lead="Eerocad is a remote-first web and growth studio working with businesses across the United Kingdom."
+  path={path}
+  crumbs={crumbs}
+  pageType="AboutPage"
+  extraGraph={extraGraph}
+>
+  <section aria-labelledby="story-heading">
+    <h2 id="story-heading" class="display-lg max-w-2xl text-balance" data-reveal>
+      The <span class="accent-italic text-primary">story</span>.
+    </h2>
+    <div class="mt-8 max-w-2xl" data-reveal>
+      <Todo
+        what="600–900 words: when and why the studio started, what you do and do not take on, and what you have learned"
+        blockedOn="Business facts only you have"
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="how-heading" class="mt-20">
+    <h2 id="how-heading" class="display-lg max-w-2xl text-balance" data-reveal>
+      How we <span class="accent-italic text-primary">work</span>.
+    </h2>
+
+    <ul class="mt-12 grid gap-4 sm:grid-cols-2" data-stagger>
+      {
+        howWeWork.map((item) => (
+          <li data-stagger-item>
+            <div
+              class="h-full rounded-3xl border border-border bg-white p-7"
+              style="box-shadow: var(--shadow-card);"
+            >
+              <h3 class="text-lg font-semibold tracking-tight">{item.title}</h3>
+              <p class="mt-3 text-muted-foreground">{item.body}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section aria-labelledby="team-heading" class="mt-20">
+    <h2 id="team-heading" class="display-lg max-w-2xl text-balance" data-reveal>
+      The <span class="accent-italic text-primary">team</span>.
+    </h2>
+    <div class="mt-8 max-w-2xl" data-reveal>
+      {/* Do NOT ship an empty team section. The current site has a "Meet the
+          Team" heading over roughly 950px of empty space, which reads as an
+          abandoned build. Either real people go here, or the section goes. */}
+      <Todo
+        what="Named people with photos, roles and LinkedIn profiles"
+        blockedOn="Real people. If there are none to show yet, delete this section rather than shipping it empty."
+      />
+    </div>
+  </section>
+
+  <section aria-labelledby="facts-heading" class="mt-20">
+    <h2 id="facts-heading" class="display-lg max-w-2xl text-balance" data-reveal>
+      Company <span class="accent-italic text-primary">facts</span>.
+    </h2>
+    <div class="mt-8 max-w-2xl" data-reveal>
+      <Todo
+        what="Registered name, company number, place of registration, registered office, VAT number if registered"
+        blockedOn="Company registration. There is currently no 'Eerocad' at Companies House, and UK trading disclosure rules generally require these details on a trading website."
+      />
+    </div>
+  </section>
+
+  <CtaBand heading="Want to work" accent="with us" />
+</PageLayout>

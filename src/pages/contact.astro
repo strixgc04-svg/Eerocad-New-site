@@ -1,0 +1,141 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Todo from '@/components/Todo.astro';
+import RotatingBadge from '@/components/RotatingBadge.astro';
+import { ID } from '@/lib/schema';
+
+const path = '/contact/';
+const title = 'Contact Eerocad | Book a Call';
+const description =
+  'Talk to Eerocad about a website, SEO or paid campaigns. Book a 30-minute call, email us, or call the UK number directly.';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Contact', path },
+];
+
+// ONE canonical Calendly link site-wide. The old site used two different
+// event links, and the embedded one was returning
+// "A meeting has already been scheduled using this link".
+// VERIFY THIS LINK WORKS BEFORE LAUNCH.
+const CALENDLY = 'https://calendly.com/d/cq33-q2f-bc4';
+
+const extraGraph = [
+  {
+    '@type': 'ContactPage',
+    '@id': `https://eerocad.com${path}#contactpage`,
+    mainEntity: { '@id': ID.org },
+    significantLink: CALENDLY,
+  },
+];
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  heading="Tell us what you're"
+  headingAccent="trying to build"
+  lead="Thirty minutes, no deck, no pressure. You will leave knowing roughly what it costs and how long it takes — even if you build it elsewhere."
+  path={path}
+  crumbs={crumbs}
+  pageType="ContactPage"
+  extraGraph={extraGraph}
+>
+  <div class="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
+    {/* The booking path must survive without JavaScript. The old site embedded
+        a Calendly iframe whose failure state was a blank box, and every CTA
+        pointed at it. A plain link always works. */}
+    <div
+      class="rounded-3xl border border-border bg-white p-8 sm:p-10"
+      style="box-shadow: var(--shadow-card);"
+      data-reveal
+    >
+      <h2 class="text-2xl font-semibold tracking-tight">Book a 30-minute call</h2>
+      <p class="mt-3 text-muted-foreground">
+        No preparation needed. We will ask what you are building, tell you
+        roughly what it costs, and say so if we are not the right fit.
+      </p>
+
+      <a
+        href={CALENDLY}
+        rel="noopener"
+        data-magnetic
+        class="group mt-7 inline-flex min-h-13 items-center gap-2 rounded-full bg-ink px-7 font-medium text-white transition-colors hover:bg-primary"
+      >
+        Open the booking calendar
+        <span
+          class="transition-transform duration-300 group-hover:translate-x-1"
+          aria-hidden="true">&rarr;</span
+        >
+      </a>
+
+      <div class="mt-8 border-t border-border pt-7">
+        <h3 class="text-lg font-semibold tracking-tight">Rather not book a call?</h3>
+        <p class="mt-2 text-muted-foreground">
+          Email us instead and we will reply with questions or a rough number.
+        </p>
+        <div class="mt-5">
+          <Todo
+            what="A 3-field enquiry form (name, email, what you need) with a stated reply time"
+            blockedOn="Choice of form handler. Build it as a native HTML form that works without JS."
+          />
+        </div>
+      </div>
+    </div>
+
+    <aside
+      class="rounded-3xl border border-border bg-paper-warm p-8 sm:p-10"
+      aria-labelledby="details-heading"
+      data-reveal
+    >
+      <h2 id="details-heading" class="text-2xl font-semibold tracking-tight">Details</h2>
+
+      <dl class="mt-7 space-y-6 text-sm">
+        <div>
+          <dt class="eyebrow">Email</dt>
+          <dd class="mt-1">
+            <a
+              href="mailto:info@eerocad.com"
+              class="inline-flex min-h-11 items-center text-base transition-colors hover:text-primary"
+            >
+              info@eerocad.com
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Phone (UK)</dt>
+          <dd class="mt-1">
+            <a
+              href="tel:+447405327656"
+              class="inline-flex min-h-11 items-center text-base transition-colors hover:text-primary"
+            >
+              +44 7405 327656
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Phone (India)</dt>
+          <dd class="mt-1">
+            <a
+              href="tel:+919310733744"
+              class="inline-flex min-h-11 items-center text-base transition-colors hover:text-primary"
+            >
+              +91 9310 733744
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Where we are</dt>
+          <dd class="mt-2 text-base text-muted-foreground">
+            Remote-first, serving clients across the United Kingdom. Delivery
+            team in New Delhi.
+          </dd>
+        </div>
+      </dl>
+
+      <div class="mt-10 flex justify-center">
+        <RotatingBadge text="NO DECK · NO PRESSURE · BOOK A CALL · " />
+      </div>
+    </aside>
+  </div>
+</PageLayout>

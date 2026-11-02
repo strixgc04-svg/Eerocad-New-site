@@ -1,0 +1,56 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+
+const path = '/industries/';
+const title = 'Industries We Work In | Eerocad';
+const description =
+  'Sector-specific web design and marketing from Eerocad, including restaurants and UK ecommerce and D2C brands.';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Industries', path },
+];
+
+const industries = [
+  {
+    href: '/industries/restaurants/',
+    name: 'Restaurants',
+    blurb: 'Menus, bookings and local search for hospitality businesses.',
+  },
+  {
+    href: '/industries/ecommerce-d2c/',
+    name: 'Ecommerce & D2C',
+    blurb: 'Shopify storefronts and the paid media that sells through them.',
+  },
+];
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  heading="Where we have done the work"
+  headingAccent="before"
+  lead="Where we have done the work before."
+  path={path}
+  crumbs={crumbs}
+  pageType="CollectionPage"
+>
+  <ul class="grid max-w-3xl gap-4 sm:grid-cols-2">
+    {
+      industries.map((i) => (
+        <li data-reveal>
+          <a
+            href={i.href}
+            class="flex h-full flex-col rounded-xl border border-border bg-card p-6 transition-colors hover:border-primary/60"
+          >
+            <h2 class="text-xl font-semibold">{i.name}</h2>
+            <p class="mt-2 flex-1 text-sm text-muted-foreground">{i.blurb}</p>
+            <span class="mt-4 text-sm font-medium text-primary-ink">
+              Read more <span aria-hidden="true">&rarr;</span>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</PageLayout>

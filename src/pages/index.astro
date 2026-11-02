@@ -1,0 +1,41 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/home/Hero.astro';
+import ServicesGrid from '@/components/home/ServicesGrid.astro';
+import Process from '@/components/home/Process.astro';
+import WorkPreview from '@/components/home/WorkPreview.astro';
+import Capabilities from '@/components/home/Capabilities.astro';
+import PricingTeaser from '@/components/home/PricingTeaser.astro';
+import Faq from '@/components/home/Faq.astro';
+import FinalCta from '@/components/home/FinalCta.astro';
+import { serviceNodes, webPage } from '@/lib/schema';
+
+const title = 'Eerocad | Web Design, SEO & Paid Ads Agency, UK';
+const description =
+  'Eerocad is a remote-first UK digital agency. We build websites that sell and run the SEO and paid campaigns that fill them with enquiries.';
+
+const graph = [
+  webPage({ path: '/', name: title, description }),
+  ...serviceNodes(),
+];
+
+/*
+ * Funnel order: promise -> proof -> what we do -> how it works -> evidence ->
+ * capability -> price -> objections -> ask.
+ *
+ * Each section summarises and links out to its own page. The full service copy
+ * does NOT live here: anchors are not indexable URLs, and duplicating the page
+ * body would compete with the page that is meant to rank.
+ */
+---
+
+<BaseLayout title={title} description={description} graph={graph} intro>
+  <Hero />
+  <ServicesGrid />
+  <Process />
+  <WorkPreview />
+  <Capabilities />
+  <PricingTeaser />
+  <Faq />
+  <FinalCta />
+</BaseLayout>

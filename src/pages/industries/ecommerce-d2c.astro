@@ -1,0 +1,39 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Todo from '@/components/Todo.astro';
+
+const path = '/industries/ecommerce-d2c/';
+const title = 'Ecommerce & D2C Agency UK | Eerocad';
+const description =
+  'Shopify storefronts and the Meta and Google campaigns that sell through them, built for UK D2C brands.';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Industries', path: '/industries/' },
+  { name: 'Ecommerce & D2C', path },
+];
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  heading="Ecommerce and"
+  headingAccent="D2C"
+  lead="A storefront built to convert, and the paid media to fill it."
+  path={path}
+  crumbs={crumbs}
+>
+  <div class="max-w-3xl">
+    <Todo
+      what="800-1,200 words of D2C-specific copy"
+      blockedOn="The Ayunik case study, rewritten with sourced outcomes"
+    >
+      <p class="mt-3 text-muted-foreground">
+        D2C founders on this SERP are looking for provable returns. Include spend,
+        ROAS and CAC against a baseline, and state plainly who owns the ad
+        account. Avoid unverifiable claims — a "20% market share" figure for a
+        clothing brand reads as invented, because it is unmeasurable.
+      </p>
+    </Todo>
+  </div>
+</PageLayout>

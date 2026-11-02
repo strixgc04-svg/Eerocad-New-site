@@ -1,0 +1,636 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Self-hosted fonts.
+ *
+ * Not a third-party CDN: a Google Fonts <link> is a render-blocking request
+ * to another origin on the critical path, and the old site did exactly that.
+ *
+ * DM Sans is the brand face (variable, 400-700). Instrument Serif italic is
+ * the accent face, used only for a word or two per heading - that contrast is
+ * what stops a white page reading as a template.
+ *
+ * font-display: swap so text is never invisible while a font loads.
+ */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/dm-sans-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-serif-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ===================================================================== *
+ * Brand tokens — light base
+ *
+ * The site is white-first. Sections alternate between pure white and a
+ * warm off-white so the page has rhythm without needing boxes everywhere.
+ *
+ * On white, --brand-red measures 4.98:1, so the same red works as type AND
+ * as a fill. (On the old near-black base it measured 4.02:1 as text and
+ * needed a separate lighter token. Light base removes that problem.)
+ * ===================================================================== */
+:root {
+  --brand-red: #d32f2f;
+  --brand-red-hover: #b82525;
+  --brand-red-wash: #fdeceb;
+
+  --ink: #0a0a0a;
+  --ink-muted: #5c5c5c; /* 6.7:1 on white */
+  --ink-subtle: #8a8a8a; /* large text / decorative only */
+
+  --paper: #ffffff;
+  --paper-warm: #f6f5f2;
+  --paper-sunk: #efeeea;
+
+  --line: #e6e4e0;
+  --line-strong: #d6d3ce;
+
+  /* shadcn/ui semantic tokens mapped onto the brand palette */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--brand-red);
+  --primary-foreground: #ffffff;
+  --secondary: var(--paper-warm);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper-warm);
+  --muted-foreground: var(--ink-muted);
+  --accent: var(--paper-warm);
+  --accent-foreground: var(--ink);
+  --destructive: var(--brand-red);
+  --destructive-foreground: #ffffff;
+  --border: var(--line);
+  --input: var(--line-strong);
+  --ring: var(--brand-red);
+  --radius: 1.25rem;
+
+  /* Soft, believable elevation. Not a drop shadow from 2014. */
+  --shadow-card: 0 1px 2px rgb(10 10 10 / 0.04), 0 8px 24px -12px rgb(10 10 10 / 0.12);
+  --shadow-float: 0 2px 6px rgb(10 10 10 / 0.05), 0 16px 40px -16px rgb(10 10 10 / 0.18);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Red type. Same value as the fill now, kept as a named token so every
+     call site stays semantic if the palette ever moves back to dark. */
+  --color-primary-ink: var(--brand-red);
+  --color-brand-red: var(--brand-red);
+  --color-paper: var(--paper);
+  --color-paper-warm: var(--paper-warm);
+  --color-paper-sunk: var(--paper-sunk);
+  --color-ink: var(--ink);
+  --color-ink-subtle: var(--ink-subtle);
+
+  --radius-sm: calc(var(--radius) - 0.75rem);
+  --radius-md: calc(var(--radius) - 0.5rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.5rem);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-float: var(--shadow-float);
+
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--paper);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--brand-red);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand-red);
+    outline-offset: 3px;
+  }
+
+  /*
+   * Scroll reveals. Content renders in the HTML and is hidden by CSS, then
+   * revealed by a JS class. It is never rendered *from* JS, so crawlers and
+   * no-JS users always see it.
+   */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  .no-js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===================================================================== *
+ * Decorative layers
+ *
+ * On a light base the backdrop has to stay almost invisible, or the page
+ * stops reading as premium. These are deliberately low-contrast.
+ * ===================================================================== */
+
+/* Warm gradient wash. Replaces the dark "aurora". */
+.wash {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.wash__blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+.wash__blob--1 {
+  width: 44rem;
+  height: 30rem;
+  right: -10rem;
+  top: -10rem;
+  background: radial-gradient(circle at 50% 50%, rgb(211 47 47 / 0.16), transparent 68%);
+  animation: drift-a 26s ease-in-out infinite alternate;
+}
+
+.wash__blob--2 {
+  width: 36rem;
+  height: 26rem;
+  left: -8rem;
+  top: 6rem;
+  background: radial-gradient(circle at 50% 50%, rgb(255 170 120 / 0.18), transparent 68%);
+  animation: drift-b 32s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a {
+  to {
+    transform: translate3d(-5rem, 4rem, 0) scale(1.12);
+  }
+}
+@keyframes drift-b {
+  to {
+    transform: translate3d(4rem, -3rem, 0) scale(1.15);
+  }
+}
+
+/* Dot grid. The premium equivalent of the references' graph paper. */
+.dotgrid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image: radial-gradient(circle at 1px 1px, rgb(10 10 10 / 0.07) 1px, transparent 0);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+
+/* ===================================================================== *
+ * Intro curtain
+ *
+ * Pure CSS, triggered by a class an inline <head> script sets. JS is not a
+ * failure point: if the script never runs the curtain is never inserted, and
+ * if the animation never runs the curtain still ends hidden via its final
+ * keyframe. It also never blocks LCP, because the hero paints beneath it.
+ *
+ * Shown once per session, and never under prefers-reduced-motion.
+ * ===================================================================== */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  animation: intro-out 0.55s cubic-bezier(0.76, 0, 0.24, 1) 0.85s forwards;
+}
+
+.intro__mark {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  letter-spacing: -0.03em;
+  animation: intro-mark 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.intro__bar {
+  display: block;
+  width: 2.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--brand-red);
+  transform-origin: left;
+  animation: intro-bar 0.9s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+.intro__count {
+  position: absolute;
+  right: clamp(1rem, 4vw, 3rem);
+  bottom: clamp(1rem, 4vw, 3rem);
+  font-size: clamp(2.5rem, 9vw, 6rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--paper-sunk);
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes intro-out {
+  to {
+    transform: translateY(-101%);
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@keyframes intro-mark {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+}
+
+@keyframes intro-bar {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/*
+ * Deliberately NO scroll lock.
+ *
+ * `html.intro-active body { overflow: hidden }` would need JS to remove the
+ * class afterwards, and if that JS ever failed the page would be permanently
+ * unscrollable. The curtain is up for 1.4s; someone scrolling through it is a
+ * far smaller problem than a page that cannot scroll at all.
+ */
+
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}
+
+/* Line-mask reveal for headings. The mask reserves the final layout box. */
+.line-mask {
+  display: block;
+  overflow: hidden;
+}
+
+/* Marquee */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  gap: var(--marquee-gap, 4rem);
+}
+
+.marquee__track {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--marquee-gap, 4rem);
+  padding-right: var(--marquee-gap, 4rem);
+  min-width: 100%;
+  animation: marquee var(--marquee-duration, 42s) linear infinite;
+  will-change: transform;
+}
+
+.marquee:hover .marquee__track,
+.marquee:focus-within .marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+/* Spotlight cards — a warm tint that follows the cursor on fine pointers. */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    20rem circle at var(--mx, 50%) var(--my, 50%),
+    rgb(211 47 47 / 0.07),
+    transparent 68%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.spotlight:hover::before,
+.spotlight:focus-within::before {
+  opacity: 1;
+}
+
+/* Scroll-drawn rail for the process section. */
+.rail {
+  position: relative;
+}
+
+.rail__line {
+  position: absolute;
+  inset-block: 0;
+  width: 1px;
+  background: var(--line);
+}
+
+.rail__progress {
+  position: absolute;
+  inset-block-start: 0;
+  width: 1px;
+  background: var(--brand-red);
+  transform-origin: top;
+  transform: scaleY(0);
+  will-change: transform;
+}
+
+/* Native <details> that animates open without touching layout height. */
+@supports (interpolate-size: allow-keywords) {
+  .faq-item {
+    interpolate-size: allow-keywords;
+  }
+  .faq-item::details-content {
+    block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      block-size 0.35s ease,
+      opacity 0.35s ease,
+      content-visibility 0.35s allow-discrete;
+  }
+  .faq-item[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wash__blob,
+  .marquee__track {
+    animation: none !important;
+  }
+  .rail__progress {
+    transform: scaleY(1);
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  max-width: 82rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Display type: tight, confident, the main device on a white page. */
+@utility display-xl {
+  font-size: clamp(2.75rem, 8vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+
+@utility display-lg {
+  font-size: clamp(2rem, 4.6vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+/* The accent face. One or two words per heading, never a whole sentence. */
+@utility accent-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* A hand-drawn ellipse around a word, as on the Petalwalk headings. */
+@utility circled {
+  position: relative;
+  display: inline-block;
+  padding-inline: 0.35em;
+}
+
+/*
+ * Long-form content from Markdown. Hand-rolled rather than @tailwindcss/typography
+ * so the rhythm matches the rest of the design system and nothing extra ships.
+ */
+@utility prose-page {
+  color: var(--ink-muted);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+
+  & > * + * {
+    margin-top: 1.25em;
+  }
+
+  & h2 {
+    color: var(--ink);
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    margin-top: 2.5em;
+    scroll-margin-top: 6rem;
+  }
+
+  & h3 {
+    color: var(--ink);
+    font-size: 1.25rem;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+    margin-top: 2em;
+    scroll-margin-top: 6rem;
+  }
+
+  & strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  & a {
+    color: var(--brand-red);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  & ul,
+  & ol {
+    padding-left: 1.25rem;
+  }
+
+  & ul {
+    list-style: disc;
+  }
+  & ol {
+    list-style: decimal;
+  }
+
+  & li + li {
+    margin-top: 0.5em;
+  }
+
+  & li::marker {
+    color: var(--ink-subtle);
+  }
+
+  & blockquote {
+    border-left: 2px solid var(--brand-red);
+    padding-left: 1.25rem;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  & code {
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+    border-radius: 0.375rem;
+    padding: 0.1em 0.35em;
+    font-size: 0.9em;
+  }
+
+  & pre {
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    overflow-x: auto;
+  }
+
+  & pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  & th,
+  & td {
+    border-bottom: 1px solid var(--line);
+    padding: 0.65rem 0.75rem;
+    text-align: left;
+  }
+
+  & th {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  & hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin-block: 2.5em;
+  }
+}
+
+@utility eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-muted);
+}

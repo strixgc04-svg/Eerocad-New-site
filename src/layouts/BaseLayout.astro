@@ -1,0 +1,113 @@
+---
+import '@/styles/global.css';
+import SeoHead from '@/components/SeoHead.astro';
+import JsonLd from '@/components/JsonLd.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { organization, website } from '@/lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+  /** Page-specific JSON-LD nodes. Organization and WebSite are always included. */
+  graph?: Record<string, unknown>[];
+  /** The intro curtain is for the home page only. */
+  intro?: boolean;
+}
+
+const { title, description, image, noindex, type, graph = [], intro = false } =
+  Astro.props;
+---
+
+<!doctype html>
+<html lang="en-GB" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    {/* Self-hosted, same-origin, so no third-party round trip before text. */}
+    <link
+      rel="preload"
+      href="/fonts/dm-sans-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <SeoHead
+      title={title}
+      description={description}
+      image={image}
+      noindex={noindex}
+      type={type}
+    />
+
+    <JsonLd graph={[organization, website, ...graph]} />
+
+    <script is:inline>
+      document.documentElement.classList.remove('no-js');
+    </script>
+
+    <script is:inline define:vars={{ introEnabled: intro }}>
+      (function () {
+        if (!introEnabled) return;
+        try {
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          if (sessionStorage.getItem('eerocad-intro')) return;
+          sessionStorage.setItem('eerocad-intro', '1');
+          document.documentElement.classList.add('intro-active');
+        } catch (e) {
+          /* private mode or blocked storage: just skip the intro */
+        }
+      })();
+    </script>
+  </head>
+
+  <body class="min-h-dvh antialiased">
+    {
+      intro && (
+        <div class="intro" aria-hidden="true" data-intro>
+          <p class="intro__mark">
+            <span class="intro__bar" />
+            Eerocad
+          </p>
+          <span class="intro__count" data-intro-count>
+            0
+          </span>
+        </div>
+      )
+    }
+
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[300] focus:rounded-full focus:bg-ink focus:px-5 focus:py-2.5 focus:text-white"
+    >
+      Skip to content
+    </a>
+
+    <Header />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      import '@/scripts/motion';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  /* The curtain only renders when the inline script opted in. */
+  html:not(.intro-active) [data-intro] {
+    display: none;
+  }
+</style>

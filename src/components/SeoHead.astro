@@ -1,0 +1,40 @@
+---
+import { SITE } from '@/lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absolute or root-relative path to an OG image. */
+  image?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+}
+
+const { title, description, image = '/brand/og-default.png', noindex = false, type = 'website' } =
+  Astro.props;
+
+// Canonical is always derived from the real origin, never hard-coded.
+// The old site canonicalised every page to eerocad.framer.ai, which told
+// Google the brand domain was a duplicate.
+const canonical = new URL(Astro.url.pathname, SITE).href;
+const ogImage = new URL(image, SITE).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content="Eerocad" />
+<meta property="og:locale" content="en_GB" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />

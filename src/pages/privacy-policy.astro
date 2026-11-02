@@ -1,0 +1,43 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Todo from '@/components/Todo.astro';
+
+const path = '/privacy-policy/';
+const title = 'Privacy Policy | Eerocad';
+const description =
+  'How Eerocad collects, uses and protects personal data, and the rights you have over it under UK GDPR.';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Privacy Policy', path },
+];
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  heading="Privacy"
+  headingAccent="Policy"
+  path={path}
+  crumbs={crumbs}
+>
+  <div class="max-w-2xl">
+    <Todo
+      what="A real privacy policy"
+      blockedOn="Naming the legal entity and data controller"
+    >
+      <p class="mt-3 text-muted-foreground">
+        Do not migrate the current one. It is an unedited template: it names
+        <code>support@landin.com</code> as its contact, identifies no controller or
+        legal entity, and cites no UK GDPR basis.
+      </p>
+      <ul class="mt-3 list-disc space-y-1 pl-5 text-muted-foreground">
+        <li>Named controller and a working contact address</li>
+        <li>UK GDPR lawful bases, and the ICO registration number</li>
+        <li>The processors actually used: Calendly, analytics, any ad pixels</li>
+        <li>International transfers, if client data reaches the New Delhi team</li>
+        <li>A cookie policy and a consent banner that fires before analytics</li>
+      </ul>
+    </Todo>
+  </div>
+</PageLayout>

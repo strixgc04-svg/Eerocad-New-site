@@ -1,0 +1,120 @@
+---
+import Todo from '@/components/Todo.astro';
+
+/*
+ * Cards link to real case-study URLs. On the current site the equivalent cards
+ * are not links at all.
+ *
+ * No outcome figures until each has a source and a date range.
+ */
+const projects = [
+  {
+    client: 'Dhillon of London',
+    sector: 'Luxury transport',
+    year: '2024',
+    href: '/work/dhillon-of-london/',
+    tint: 'from-[#f6ece9] to-[#efe7e3]',
+  },
+  {
+    client: 'Adachi',
+    sector: 'Hospitality',
+    year: '2024',
+    href: '/work/adachi/',
+    tint: 'from-[#f1efe9] to-[#e9e6df]',
+  },
+  {
+    client: 'Ayunik Clothing',
+    sector: 'Ecommerce',
+    year: '2025',
+    href: '/work/ayunik/',
+    tint: 'from-[#f7eae8] to-[#eee3e0]',
+  },
+  {
+    client: 'Escalate Digital',
+    sector: 'B2B marketing',
+    year: '2024',
+    href: '/work/escalate/',
+    tint: 'from-[#eff0ee] to-[#e6e8e4]',
+  },
+];
+---
+
+<section id="work" aria-labelledby="work-heading" class="container-page py-24 sm:py-32">
+  <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
+    <div class="max-w-2xl">
+      <p class="eyebrow">Selected work</p>
+      <h2 id="work-heading" class="display-lg mt-5 text-balance">
+        Where they started. What <span class="accent-italic text-primary">changed</span>.
+      </h2>
+    </div>
+    <a
+      href="/work/"
+      class="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-white px-5 text-sm font-medium transition-colors hover:bg-paper-warm"
+    >
+      All case studies <span aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
+
+  <ul class="mt-14 grid gap-5 sm:grid-cols-2" data-stagger>
+    {
+      projects.map((p) => (
+        <li data-stagger-item>
+          <a
+            href={p.href}
+            class="group block overflow-hidden rounded-[1.75rem] border border-border bg-white p-3 transition-shadow duration-300"
+            style="box-shadow: var(--shadow-card);"
+          >
+            <div class="flex items-center justify-between px-3 pt-2 pb-4">
+              <p class="text-sm font-medium">{p.client}</p>
+              <p class="font-mono text-xs text-ink-subtle">/{p.year}</p>
+            </div>
+
+            <div
+              class={`relative aspect-[16/11] overflow-hidden rounded-[1.25rem] bg-gradient-to-br ${p.tint}`}
+            >
+              {/* Parallax layer. Swap for a real <Image /> once approved
+                  imagery exists - keep the aspect box so CLS stays 0. */}
+              <div
+                data-parallax
+                class="absolute inset-[-12%] bg-[radial-gradient(55%_55%_at_50%_40%,rgb(211_47_47_/_0.08),transparent_70%)]"
+                aria-hidden="true"
+              />
+              <div class="absolute inset-0 grid place-items-center">
+                <span class="eyebrow">Project imagery</span>
+              </div>
+            </div>
+
+            <div class="flex items-end justify-between gap-4 px-3 pt-4 pb-2">
+              <p class="text-sm text-muted-foreground">{p.sector}</p>
+              <span
+                class="inline-flex size-9 items-center justify-center rounded-full bg-paper-warm transition-colors group-hover:bg-primary group-hover:text-white"
+                aria-hidden="true"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="mt-10 max-w-2xl">
+    <Todo
+      what="Real project imagery, and one sourced outcome per case study"
+      blockedOn="Client permission, plus analytics exports with date ranges. Also resolve whether Adachi is London or Birmingham, Michigan."
+    />
+  </div>
+</section>

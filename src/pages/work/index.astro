@@ -1,0 +1,68 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Todo from '@/components/Todo.astro';
+import { getCollection } from 'astro:content';
+
+const path = '/work/';
+const title = 'Our Work | Case Studies | Eerocad';
+const description =
+  'Selected Eerocad projects, each with the baseline, the work done, and the measured outcome.';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Work', path },
+];
+
+const entries = (await getCollection('work', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  heading="Where they started. What"
+  headingAccent="changed"
+  lead="Each case study states where the client began, what we actually did, and what moved as a result."
+  path={path}
+  crumbs={crumbs}
+  pageType="CollectionPage"
+>
+  {
+    entries.length === 0 ? (
+      <Todo
+        what="Four case studies in src/content/work/"
+        blockedOn="Rewritten case studies with sourced, dated outcomes and client permission"
+      />
+    ) : (
+      <ul class="grid gap-5 sm:grid-cols-2" data-stagger>
+        {entries.map((entry) => (
+          <li data-stagger-item>
+            {/* Cards are real links. On the current site they go nowhere. */}
+            <a
+              href={`/work/${entry.id}/`}
+              class="group block h-full rounded-[1.75rem] border border-border bg-white p-7 transition-colors hover:border-primary/40"
+              style="box-shadow: var(--shadow-card);"
+            >
+              <p class="eyebrow">{entry.data.sector}</p>
+              <h2 class="mt-3 text-2xl font-semibold tracking-tight">{entry.data.client}</h2>
+              <p class="mt-3 text-muted-foreground">{entry.data.description}</p>
+              <span class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary-ink">
+                Read the case study
+                <span
+                  class="transition-transform duration-300 group-hover:translate-x-1"
+                  aria-hidden="true"
+                >
+                  &rarr;
+                </span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <CtaBand heading="Want results like" accent="these" />
+</PageLayout>

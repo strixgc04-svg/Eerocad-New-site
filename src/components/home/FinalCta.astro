@@ -1,0 +1,55 @@
+---
+import RotatingBadge from '@/components/RotatingBadge.astro';
+
+/*
+ * One conversion path, one Calendly link, stated plainly.
+ *
+ * The current site offers six differently-worded CTA labels pointing at two
+ * different Calendly events, one of which returns an error.
+ */
+---
+
+<section aria-labelledby="cta-heading" class="container-page pb-8">
+  <div
+    class="dotgrid relative isolate overflow-hidden rounded-[2.5rem] border border-border bg-paper-warm px-6 py-20 text-center sm:px-12 sm:py-28"
+  >
+    <div class="wash" aria-hidden="true">
+      <div class="wash__blob wash__blob--1"></div>
+      <div class="wash__blob wash__blob--2"></div>
+    </div>
+
+    <div class="relative">
+      <h2 id="cta-heading" class="display-lg mx-auto max-w-3xl text-balance" data-reveal>
+        Tell us what you're <span class="accent-italic text-primary">trying to build</span>.
+      </h2>
+      <p class="mx-auto mt-6 max-w-xl text-lg text-muted-foreground" data-reveal>
+        Thirty minutes, no deck, no pressure. You'll leave knowing roughly what
+        it costs and how long it takes &mdash; even if you build it elsewhere.
+      </p>
+
+      <div class="mt-10 flex flex-wrap justify-center gap-3" data-reveal>
+        <a
+          href="/contact/"
+          data-magnetic
+          class="group inline-flex min-h-13 items-center gap-2 rounded-full bg-ink px-8 font-medium text-white transition-colors hover:bg-primary"
+        >
+          Book a 30-minute call
+          <span
+            class="transition-transform duration-300 group-hover:translate-x-1"
+            aria-hidden="true">&rarr;</span
+          >
+        </a>
+        <a
+          href="mailto:info@eerocad.com"
+          class="inline-flex min-h-13 items-center rounded-full border border-border bg-white px-8 font-medium transition-colors hover:bg-paper-sunk"
+        >
+          Email instead
+        </a>
+      </div>
+
+      <div class="mt-14 flex justify-center" data-reveal>
+        <RotatingBadge text="EEROCAD · UK WEB & GROWTH STUDIO · " />
+      </div>
+    </div>
+  </div>
+</section>
