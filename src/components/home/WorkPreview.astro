@@ -13,38 +13,66 @@ const published = new Set(
   (await getCollection('work', ({ data }) => !data.draft)).map((e) => e.id),
 );
 
+/*
+ * `blurb` states scope and nothing else. Each one is drawn from the services
+ * and opening paragraph of that client's own case study on the current site
+ * (content/eerocad-site-content.md) — what was done, never what it achieved.
+ *
+ * No outcome belongs on a card. The numbers on the current site are
+ * unsourced, and the work collection's schema requires a `period` and a
+ * `source` for every figure precisely so none can reach a page without one.
+ *
+ * `tint` is the inside of the folder, not a background wash — the sheet and
+ * the flap are both paper white, so it has to be deep enough to separate
+ * two white planes from each other. These are a couple of steps down from
+ * the pale section tints used elsewhere for exactly that reason.
+ */
 const projects = [
   {
     slug: 'dhillon-of-london',
     client: 'Dhillon of London',
     sector: 'Luxury transport',
+    blurb: 'Brand identity and social content for a luxury coach fleet.',
     year: '2024',
-    tint: 'from-[#f6ece9] to-[#efe7e3]',
+    tint: 'from-[#e8d8d2] to-[#dbc8c0]',
   },
   {
     slug: 'adachi',
     client: 'Adachi',
     sector: 'Hospitality',
+    // Deliberately no city: the current site puts this restaurant in London
+    // in the case study and in Birmingham, Michigan in the testimonial.
+    blurb: 'Identity and local search for a Japanese fine-dining restaurant.',
     year: '2024',
-    tint: 'from-[#f1efe9] to-[#e9e6df]',
+    tint: 'from-[#e3dfd3] to-[#d3cdbd]',
   },
   {
     slug: 'ayunik',
     client: 'Ayunik Clothing',
     sector: 'Ecommerce',
+    blurb: 'A mobile-first Shopify store for a modest-wear clothing label.',
     year: '2025',
-    tint: 'from-[#f7eae8] to-[#eee3e0]',
+    tint: 'from-[#eddad5] to-[#ddc5c0]',
   },
   {
     slug: 'escalate',
     client: 'Escalate Digital',
     sector: 'B2B marketing',
+    blurb: 'Identity, messaging and a new site for a marketing agency.',
     year: '2024',
-    tint: 'from-[#eff0ee] to-[#e6e8e4]',
+    tint: 'from-[#dee1dc] to-[#cdd2cc]',
   },
 ].map((p) => ({ ...p, live: published.has(p.slug) }));
 
-const cardClass = 'card-panel block h-full overflow-hidden p-3';
+/*
+ * The card is a folder: the tint is the inside of the pocket, the sheet is
+ * the project filed in it, the flap carries the type. `.folder` in
+ * global.css owns the geometry and the open-on-hover gesture.
+ *
+ * aspect-ratio rather than content height, so all four cards agree and the
+ * flap's percentage lip means the same thing on every one of them.
+ */
+const cardClass = 'folder card-panel block aspect-[7/6] lg:aspect-[5/4]';
 ---
 
 <section id="work" aria-labelledby="work-heading" class="container-page section-y">
@@ -68,52 +96,56 @@ const cardClass = 'card-panel block h-full overflow-hidden p-3';
       projects.map((p) => {
         const inner = (
           <>
-            <div class="flex items-center justify-between px-3 pt-2 pb-4">
-              <p class="text-sm font-medium">{p.client}</p>
-              <p class="font-mono text-xs text-ink-subtle">/{p.year}</p>
-            </div>
+            <span class={`absolute inset-0 bg-gradient-to-br ${p.tint}`} aria-hidden="true" />
 
-            <div
-              class={`relative aspect-[2/1] overflow-hidden rounded-[1.25rem] bg-gradient-to-br sm:aspect-[16/11] ${p.tint}`}
-            >
-              {/* Parallax layer. Swap for a real <Image /> once approved
-                  imagery exists — keep the aspect box so CLS stays 0. */}
+            {/* The filed item. Swap for a real <Image /> once approved imagery
+                exists — the box is positioned, so CLS stays 0 either way. */}
+            <div class="folder__sheet bg-paper" aria-hidden="true">
               <div
                 data-parallax
                 class="absolute inset-[-12%] bg-[radial-gradient(55%_55%_at_50%_40%,rgb(211_47_47_/_0.08),transparent_70%)]"
-                aria-hidden="true"
               />
-              <div class="absolute inset-0 grid place-items-center">
+              {/* Centred on the part of the sheet the flap does not cover,
+                  not on the sheet, so the label clears the flap's edge in
+                  both the tucked and the drawn-out position. */}
+              <div class="absolute inset-x-0 top-0 grid h-[56%] place-items-center">
                 <span class="eyebrow">Project imagery</span>
               </div>
             </div>
 
-            <div class="flex items-end justify-between gap-4 px-3 pt-4 pb-2">
-              <p class="text-sm text-muted-foreground">{p.sector}</p>
-              {p.live ? (
-                <span
-                  class="inline-flex size-9 items-center justify-center rounded-full bg-paper-warm transition-colors group-hover:bg-primary group-hover:text-white"
-                  aria-hidden="true"
-                >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <line x1="7" y1="17" x2="17" y2="7" />
-                    <polyline points="7 7 17 7 17 17" />
-                  </svg>
-                </span>
-              ) : (
-                <span class="rounded-full border border-border px-3 py-1 text-xs text-ink-subtle">
-                  In progress
-                </span>
-              )}
+            <div class="folder__face">
+              <span class="folder__tab font-mono text-xs text-ink-subtle">/{p.year}</span>
+
+              <div class="folder__body">
+                <div>
+                  <p class="eyebrow">{p.sector}</p>
+                  <p class="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">{p.client}</p>
+                </div>
+
+                <div class="flex items-end justify-between gap-4">
+                  <p class="max-w-md text-sm text-muted-foreground">{p.blurb}</p>
+                  {p.live && (
+                    <span
+                      class="inline-flex size-9 flex-none items-center justify-center rounded-full bg-paper-warm transition-colors group-hover:bg-primary group-hover:text-white"
+                      aria-hidden="true"
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <line x1="7" y1="17" x2="17" y2="7" />
+                        <polyline points="7 7 17 7 17 17" />
+                      </svg>
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
           </>
         );

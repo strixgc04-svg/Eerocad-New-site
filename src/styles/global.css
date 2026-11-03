@@ -490,6 +490,151 @@
   will-change: transform;
 }
 
+/* ===================================================================== *
+ * Folder cards
+ *
+ * A work card drawn as a document folder: the tinted card is the inside of
+ * the pocket, `__sheet` is the item filed in it, and `__face` is the front
+ * flap, with an index tab carrying the year.
+ *
+ * On a fine pointer the pocket opens — the flap slides down while the sheet
+ * rises and straightens, so the item reads as being drawn out. Both moves
+ * are transforms, so nothing reflows and nothing is repainted.
+ *
+ * Two things the geometry depends on:
+ *
+ * - The flap hangs `--folder-open` BELOW the card, so sliding it down can
+ *   never expose the tint underneath. Its own bottom padding adds the same
+ *   amount back, which is why the body padding is written here rather than
+ *   as utilities at the call site.
+ * - The flap's type is inside the flap, so it would travel with it.
+ *   `__body` carries the opposite translate: the surface moves, the words
+ *   stay put. The reference this is modelled on keeps them as siblings;
+ *   nesting them means one element positions the type against the flap.
+ * ===================================================================== */
+.folder {
+  --face: var(--paper);
+
+  /*
+   * Where the flap's top edge sits, as a share of the card's height — and
+   * the floor under it. The flap's content is a fixed number of lines while
+   * its height scales with the card, so two cards side by side around 700px
+   * wide give a share that the type does not fit in. Past that point the
+   * floor governs and the flap reaches further up the pocket.
+   */
+  --folder-lip: 50%;
+  --folder-face-min: 10.5rem;
+  --folder-open: 0.625rem;
+  --folder-lift: 1.5rem;
+
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  @media (width >= 40rem) {
+    --folder-lift: 2rem;
+  }
+}
+
+/*
+ * The sheet is only rotated in the tucked position, and tucked means pushed
+ * down, so the corners the rotation lifts always have the top inset plus
+ * `--folder-lift` to rise into. Drawn out it sits square, which is why the
+ * top inset can be this small without a corner clipping the card.
+ */
+.folder__sheet {
+  position: absolute;
+  z-index: 1;
+  inset: 6% 9% 26%;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px -4px rgb(10 10 10 / 0.22);
+  transform: translateY(var(--folder-lift)) rotate(-3deg) scale(0.95);
+  transform-origin: 50% 100%;
+}
+
+.folder__face {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: calc(-1 * var(--folder-open));
+  left: 0;
+  height: max(var(--folder-face-min), calc(100% - var(--folder-lip) + var(--folder-open)));
+  background: var(--face);
+
+  /* No top-left radius: the tab covers that corner, and a curve under it
+     would show a sliver of the pocket through the join. */
+  border-radius: 0 1.25rem 0 0;
+  box-shadow: 0 -10px 24px -18px rgb(10 10 10 / 0.5);
+}
+
+.folder__tab {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  display: flex;
+  height: 1.9rem;
+  min-width: 5.25rem;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.9rem;
+  border-radius: 0.85rem 0.85rem 0 0;
+  background: var(--face);
+}
+
+/*
+ * The join between the tab's right edge and the top of the flap. It is a
+ * concave corner — the centre of its arc lies outside the shape — which is
+ * the one radius border-radius cannot express. A radial gradient centred on
+ * this box's top-right corner fills everything beyond the arc instead.
+ */
+.folder__tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 100%;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: radial-gradient(0.9rem 0.9rem at 100% 0, transparent 98%, var(--face) 100%);
+}
+
+.folder__body {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.25rem 1.25rem calc(1.25rem + var(--folder-open));
+
+  @media (width >= 40rem) {
+    padding: 1.5rem 1.5rem calc(1.5rem + var(--folder-open));
+  }
+}
+
+.folder__sheet,
+.folder__face,
+.folder__body {
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Opening is a pointer gesture. On touch the rest state is the design, so
+   a card is never left stuck half-open by a tap that was meant as a scroll. */
+@media (hover: hover) and (pointer: fine) {
+  .folder:hover .folder__sheet,
+  .folder:focus-within .folder__sheet {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+
+  .folder:hover .folder__face,
+  .folder:focus-within .folder__face {
+    transform: translateY(var(--folder-open));
+  }
+
+  .folder:hover .folder__body,
+  .folder:focus-within .folder__body {
+    transform: translateY(calc(-1 * var(--folder-open)));
+  }
+}
+
 /* Native <details> that animates open without touching layout height. */
 @supports (interpolate-size: allow-keywords) {
   .faq-item {
@@ -517,6 +662,13 @@
   }
   .rail__progress {
     transform: scaleY(1);
+  }
+  /* The folder still opens — it is how the card answers the pointer — but
+     it arrives rather than travels. */
+  .folder__sheet,
+  .folder__face,
+  .folder__body {
+    transition: none;
   }
 }
 
