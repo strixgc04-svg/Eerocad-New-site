@@ -63,7 +63,7 @@ const cardClass = 'card-panel block h-full overflow-hidden p-3';
     </a>
   </div>
 
-  <ul class="mt-14 grid gap-5 sm:grid-cols-2" data-stagger>
+  <ul class="section-gap grid gap-5 sm:grid-cols-2" data-stagger>
     {
       projects.map((p) => {
         const inner = (
@@ -74,7 +74,7 @@ const cardClass = 'card-panel block h-full overflow-hidden p-3';
             </div>
 
             <div
-              class={`relative aspect-[16/11] overflow-hidden rounded-[1.25rem] bg-gradient-to-br ${p.tint}`}
+              class={`relative aspect-[2/1] overflow-hidden rounded-[1.25rem] bg-gradient-to-br sm:aspect-[16/11] ${p.tint}`}
             >
               {/* Parallax layer. Swap for a real <Image /> once approved
                   imagery exists — keep the aspect box so CLS stays 0. */}

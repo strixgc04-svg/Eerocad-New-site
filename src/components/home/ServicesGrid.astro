@@ -37,14 +37,14 @@ const detail: Record<string, { outcome: string; stack: string }> = {
     </p>
   </div>
 
-  <ul class="mt-10 border-t border-border sm:mt-16" data-stagger>
+  <ul class="section-gap border-t border-border" data-stagger>
     {
       SERVICES.map((s, i) => (
         <li data-stagger-item class="border-b border-border">
           <a
             href={`/services/${s.slug}/`}
             data-spotlight
-            class="spotlight group grid gap-4 py-8 transition-colors sm:grid-cols-[4rem_1fr_auto] sm:items-baseline sm:gap-8 sm:py-10"
+            class="spotlight group grid gap-3 py-5 transition-colors sm:grid-cols-[4rem_1fr_auto] sm:items-baseline sm:gap-8 sm:py-10"
           >
             <span class="font-mono text-sm text-ink-subtle tabular-nums" aria-hidden="true">
               {String(i + 1).padStart(2, '0')}
@@ -59,7 +59,7 @@ const detail: Record<string, { outcome: string; stack: string }> = {
             </div>
 
             <span
-              class="inline-flex size-11 items-center justify-center rounded-full border border-border transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-white"
+              class="hidden size-11 items-center justify-center rounded-full border border-border transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-white sm:inline-flex"
               aria-hidden="true"
             >
               <svg

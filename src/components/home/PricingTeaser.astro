@@ -59,7 +59,7 @@ const factors = [
   class="section-y border-y border-border bg-paper-warm"
 >
   <div class="container-page">
-    <div class="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end" data-reveal>
+    <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-10" data-reveal>
       <div class="max-w-2xl">
         <p class="eyebrow">Pricing</p>
         <h2 id="pricing-heading" class="display-lg mt-5 text-balance">
@@ -80,7 +80,7 @@ const factors = [
       </p>
     </div>
 
-    <ul class="stack-divide mt-16 grid gap-0 lg:grid-cols-3 lg:gap-5" data-stagger>
+    <ul class="stack-divide section-gap grid gap-0 lg:grid-cols-3 lg:gap-5" data-stagger>
       {
         models.map((m) => (
           <li data-stagger-item>
@@ -107,7 +107,7 @@ const factors = [
     </ul>
 
     {/* What actually moves the number — the useful half of a pricing page. */}
-    <div class="mt-16" data-reveal>
+    <div class="section-gap" data-reveal>
       <p class="eyebrow">What moves the number</p>
       <dl class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-3">
         {
@@ -121,7 +121,7 @@ const factors = [
       </dl>
     </div>
 
-    <div class="mt-12 flex flex-wrap items-center gap-4" data-reveal>
+    <div class="mt-8 flex flex-wrap items-center gap-4 sm:mt-12" data-reveal>
       <a
         href="/pricing/"
         class="group inline-flex min-h-12 items-center gap-2 rounded-full bg-ink px-6 font-medium text-white transition-colors hover:bg-primary"

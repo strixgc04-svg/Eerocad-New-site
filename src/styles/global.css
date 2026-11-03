@@ -543,7 +543,7 @@
  * the rhythm can be tuned in one place instead of six.
  * ===================================================================== */
 @utility section-y {
-  padding-block: 4rem;
+  padding-block: 2.5rem;
 
   @media (width >= 40rem) {
     padding-block: 6rem;
@@ -551,6 +551,22 @@
 
   @media (width >= 64rem) {
     padding-block: 8rem;
+  }
+}
+
+/*
+ * The gap between a section's heading block and its content.
+ *
+ * The same `mt-16` / `mt-14` was written unconditionally in four
+ * components, which is a desktop measurement landing on a 375px phone.
+ * Two of those stacked either side of a section boundary put 175px -
+ * most of a screen - between one heading and the next.
+ */
+@utility section-gap {
+  margin-top: 1.75rem;
+
+  @media (width >= 40rem) {
+    margin-top: 3.5rem;
   }
 }
 
