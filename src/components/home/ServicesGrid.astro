@@ -23,7 +23,7 @@ const detail: Record<string, { outcome: string; stack: string }> = {
 
 {/* Numbered row list, the Otherthing device. Reads as a contents page rather
     than a grid of identical boxes. */}
-<section id="services" aria-labelledby="services-heading" class="container-page py-24 sm:py-32">
+<section id="services" aria-labelledby="services-heading" class="container-page section-y">
   <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
     <div class="max-w-2xl">
       <p class="eyebrow">What we do</p>
@@ -37,7 +37,7 @@ const detail: Record<string, { outcome: string; stack: string }> = {
     </p>
   </div>
 
-  <ul class="mt-16 border-t border-border" data-stagger>
+  <ul class="mt-10 border-t border-border sm:mt-16" data-stagger>
     {
       SERVICES.map((s, i) => (
         <li data-stagger-item class="border-b border-border">

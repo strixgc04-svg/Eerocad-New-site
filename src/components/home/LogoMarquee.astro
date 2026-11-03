@@ -6,9 +6,9 @@
  * but get written permission before launch. Two of the six (NP Coaches,
  * 20Six Media) have no case study behind them.
  *
- * The duplicate track is aria-hidden and inert, so screen readers and agents
- * see each logo once. The old site cloned its marquee 4-5 times into the
- * accessible tree.
+ * Only the first track is in the accessible tree; every copy after it is
+ * aria-hidden and inert, so screen readers and agents see each logo once.
+ * The old site cloned its marquee 4-5 times into the accessible tree.
  *
  * The source PNGs are white-on-transparent (built for a dark site), so they
  * are inverted here to read on white.
@@ -22,8 +22,47 @@ const logos = [
   { src: '/brand/clients/20six-media.png', name: '20Six Media' },
 ];
 
+/*
+ * Every track translates by exactly one track width, so at the instant
+ * before the loop resets the first copy has left the viewport entirely and
+ * the rest have to cover it. That holds while
+ *
+ *   trackWidth >= containerWidth / (COPIES - 1)
+ *
+ * The marquee is full-bleed, so containerWidth is the viewport. Six logos
+ * make a track of roughly 1040px, which two copies cannot cover on any
+ * display wider than that - the old two-copy version relied on
+ * `min-width: 100%` to hide the shortfall, and that stretch is what made
+ * the translate distance stop matching the content. Four copies hold to
+ * about 3100px; the extra <img> tags reuse the same six cached URLs.
+ */
+const COPIES = 4;
+
+/*
+ * Each logo sits in a fixed 8.5rem slot rather than sizing to its own
+ * aspect ratio. Two reasons, and the first is not cosmetic:
+ *
+ * 1. A `w-auto` image is one width before it decodes (from the width/height
+ *    attributes) and another after, so tracks whose images had not all
+ *    loaded came out a few pixels narrower than the first one. Unequal
+ *    tracks cannot loop against a -100% translate - measured at 1017 /
+ *    983 / 982px apart for a 1010px track. A fixed slot makes every track
+ *    exactly the same width whatever has decoded.
+ * 2. Six logos drawn at six different widths read as uneven spacing.
+ *
+ * object-contain letterboxes inside the slot, so nothing is distorted.
+ *
+ * These are also deliberately not lazy. The copies sit off to the right
+ * inside an overflow-hidden strip and only ever enter view by transform,
+ * which is a fragile thing to hang loading on - a copy that has not
+ * decoded yet scrolls in as a blank slot. All four copies share the same
+ * six URLs, so it is six requests either way; fetchpriority="low" keeps
+ * them queued behind the hero.
+ */
+const slotClass = 'flex w-34 flex-none items-center justify-center';
+
 const imgClass =
-  'h-8 w-auto max-w-[8.5rem] object-contain opacity-45 invert transition-opacity duration-300 hover:opacity-80';
+  'h-8 w-full object-contain opacity-45 invert transition-opacity duration-300 hover:opacity-80';
 ---
 
 <div class="container-page">
@@ -31,38 +70,27 @@ const imgClass =
 </div>
 
 <div class="marquee" style="--marquee-duration: 46s;">
-  <ul class="marquee__track list-none">
-    {
-      logos.map((logo) => (
-        <li class="flex-none">
-          <img
-            src={logo.src}
-            alt={logo.name}
-            width="136"
-            height="40"
-            loading="lazy"
-            decoding="async"
-            class={imgClass}
-          />
-        </li>
-      ))
-    }
-  </ul>
-  <ul class="marquee__track list-none" aria-hidden="true" inert>
-    {
-      logos.map((logo) => (
-        <li class="flex-none">
-          <img
-            src={logo.src}
-            alt=""
-            width="136"
-            height="40"
-            loading="lazy"
-            decoding="async"
-            class={imgClass}
-          />
-        </li>
-      ))
-    }
-  </ul>
+  {
+    Array.from({ length: COPIES }, (_, copy) => (
+      <ul
+        class="marquee__track list-none"
+        aria-hidden={copy > 0 ? 'true' : undefined}
+        inert={copy > 0}
+      >
+        {logos.map((logo) => (
+          <li class={slotClass}>
+            <img
+              src={logo.src}
+              alt={copy === 0 ? logo.name : ''}
+              width="136"
+              height="40"
+              fetchpriority="low"
+              decoding="async"
+              class={imgClass}
+            />
+          </li>
+        ))}
+      </ul>
+    ))
+  }
 </div>

@@ -399,12 +399,25 @@
   overflow: hidden;
 }
 
-/* Marquee */
+/* ===================================================================== *
+ * Marquee
+ *
+ * Seamlessness depends on one equality: the distance between the start of
+ * one track and the start of the next must equal the distance the keyframe
+ * travels (-100%, i.e. one track's border-box width).
+ *
+ * So the spacing that separates the last logo of a track from the first
+ * logo of the next lives in the track's own padding-right, and the flex
+ * container carries NO gap. A gap here would be added on top of the
+ * translate distance and show up as a jump once per cycle.
+ *
+ * No min-width either: it would stretch a track past its content, and the
+ * translate would then cover the empty remainder as a visible blank band.
+ * ===================================================================== */
 .marquee {
   display: flex;
   overflow: hidden;
   mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
-  gap: var(--marquee-gap, 4rem);
 }
 
 .marquee__track {
@@ -413,7 +426,6 @@
   align-items: center;
   gap: var(--marquee-gap, 4rem);
   padding-right: var(--marquee-gap, 4rem);
-  min-width: 100%;
   animation: marquee var(--marquee-duration, 42s) linear infinite;
   will-change: transform;
 }
@@ -516,6 +528,29 @@
 
   @media (width >= 48rem) {
     padding-inline: 2.5rem;
+  }
+}
+
+/* ===================================================================== *
+ * Section rhythm
+ *
+ * One scale, three steps. Vertical air that reads as generous on a 27"
+ * display reads as dead space on a phone, where the viewport is ~800px
+ * tall: 6rem top and bottom spent most of a screen on nothing, so two
+ * adjacent sections pushed the next heading almost a full screen away.
+ *
+ * Every full-width section uses this rather than its own py-* pair, so
+ * the rhythm can be tuned in one place instead of six.
+ * ===================================================================== */
+@utility section-y {
+  padding-block: 4rem;
+
+  @media (width >= 40rem) {
+    padding-block: 6rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-block: 8rem;
   }
 }
 

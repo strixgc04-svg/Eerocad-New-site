@@ -35,6 +35,27 @@ async function walk(dir) {
 const all = (html, re) => [...html.matchAll(re)];
 const one = (html, re) => html.match(re);
 
+/*
+ * Does a tag carry an attribute of this name?
+ *
+ * Not `/\balt=/`: HTML5 empty-attribute syntax means `<img alt>` is exactly
+ * `<img alt="">`, which is the correct markup for a decorative image, and
+ * Astro emits that bare form whenever an attribute expression evaluates to
+ * an empty string. Matching on `alt=` reported those as missing alt.
+ *
+ * Walking the attributes rather than searching the whole tag also stops a
+ * value from matching: alt="" is absent from <img src="salt-flats.png">.
+ */
+const ATTR = /([a-zA-Z_:][-a-zA-Z0-9_:.]*)(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'`=<>]+))?/g;
+
+function hasAttr(tag, name) {
+  const inner = tag.replace(/^<[a-zA-Z][^\s/>]*/, '').replace(/\/?>$/, '');
+  for (const [, attr] of inner.matchAll(ATTR)) {
+    if (attr.toLowerCase() === name) return true;
+  }
+  return false;
+}
+
 function checkPage(file, html) {
   const isNoindex = /<meta[^>]+name="robots"[^>]+noindex/i.test(html);
 
@@ -91,7 +112,7 @@ function checkPage(file, html) {
 
   /* --- images ----------------------------------------------------------- */
   for (const [tag] of all(html, /<img\b[^>]*>/gi)) {
-    if (!/\balt=/i.test(tag)) err(file, `<img> without alt: ${tag.slice(0, 90)}`);
+    if (!hasAttr(tag, 'alt')) err(file, `<img> without alt: ${tag.slice(0, 90)}`);
   }
 
   /* --- links need accessible names -------------------------------------- */
