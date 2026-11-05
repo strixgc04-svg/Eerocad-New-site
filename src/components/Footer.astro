@@ -27,10 +27,18 @@ const linkClass =
 
     <div class="relative grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1.1fr]">
       <div>
-        <div class="flex items-center gap-2 font-semibold tracking-tight">
-          <span class="inline-block h-2 w-6 rounded-full bg-primary" aria-hidden="true"></span>
-          <span class="text-lg">Eerocad</span>
-        </div>
+        {/* The dark-panel variant: white type, red bar kept. A CSS invert()
+            would have taken the bar to cyan. Nothing else names the studio
+            in this block, so this one carries real alt text. */}
+        <img
+          src="/brand/eerocad-wordmark-light.png"
+          alt="EeroCad"
+          width="480"
+          height="126"
+          class="h-7 w-auto"
+          loading="lazy"
+          decoding="async"
+        />
         <p class="mt-4 max-w-xs text-sm text-muted-foreground">
           A remote-first digital studio serving businesses across the United
           Kingdom.
@@ -98,9 +106,9 @@ const linkClass =
     >
       {/* See docs/content-todo.md: the registered company name, number, place
           of registration and registered office belong here. There is currently
-          no "Eerocad" at Companies House, and UK trading disclosure rules
+          no "EeroCad" at Companies House, and UK trading disclosure rules
           generally require these details on a trading website. */}
-      <p>&copy; {year} Eerocad. All rights reserved.</p>
+      <p>&copy; {year} EeroCad. All rights reserved.</p>
       <div class="flex gap-5">
         <a href="/privacy-policy/" class="inline-flex min-h-11 items-center hover:text-white">
           Privacy Policy

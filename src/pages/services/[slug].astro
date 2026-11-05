@@ -16,10 +16,10 @@ const content = SERVICE_CONTENT[service.slug];
 const path = `/services/${service.slug}/`;
 
 const titles: Record<string, string> = {
-  'web-design-development': 'Web Design & Development Agency UK | Eerocad',
-  seo: 'SEO Agency UK | Technical, On-Page & Local SEO | Eerocad',
-  'performance-marketing': 'Meta & Google Ads Agency UK | Eerocad',
-  'social-media-management': 'Social Media Management Agency UK | Eerocad',
+  'web-design-development': 'Web Design & Development Agency UK | EeroCad',
+  seo: 'SEO Agency UK | Technical, On-Page & Local SEO | EeroCad',
+  'performance-marketing': 'Meta & Google Ads Agency UK | EeroCad',
+  'social-media-management': 'Social Media Management Agency UK | EeroCad',
 };
 
 const descriptions: Record<string, string> = {
@@ -32,7 +32,7 @@ const descriptions: Record<string, string> = {
     'Social media management for UK businesses: strategy, content production and community management on a consistent cadence.',
 };
 
-const title = titles[service.slug] ?? `${service.name} | Eerocad`;
+const title = titles[service.slug] ?? `${service.name} | EeroCad`;
 const description = descriptions[service.slug] ?? service.description;
 
 const crumbs = [

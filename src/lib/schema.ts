@@ -9,20 +9,25 @@ export const ID = {
   logo: `${SITE}/#logo`,
 };
 
+/*
+ * Dimensions must match the file on disk. They described a 1920x645 canvas
+ * that was mostly empty padding around the mark; the file is now trimmed to
+ * the artwork, so these moved with it.
+ */
 export const LOGO = {
   '@type': 'ImageObject',
   '@id': ID.logo,
   url: abs('/brand/eerocad-logo.png'),
   contentUrl: abs('/brand/eerocad-logo.png'),
-  width: 1920,
-  height: 645,
-  caption: 'Eerocad',
+  width: 1544,
+  height: 507,
+  caption: 'EeroCad',
 };
 
 /*
  * Organization, not LocalBusiness or ProfessionalService.
  *
- * Those types expect a physical address, and Eerocad has none. Inventing one
+ * Those types expect a physical address, and EeroCad has none. Inventing one
  * is a Google Business Profile suspension risk and a trust problem. London and
  * New Delhi are declared as `location` with city-level granularity only, which
  * is honest.
@@ -32,19 +37,26 @@ export const LOGO = {
  * Deliberately absent until the facts exist:
  *   legalName, identifier (Companies House number), vatID, foundingDate,
  *   founder, address.
- * There is currently no "Eerocad" registered at Companies House.
+ * There is currently no "EeroCad" registered at Companies House.
  */
 export const organization = {
   '@type': 'Organization',
   '@id': ID.org,
-  name: 'Eerocad',
-  alternateName: 'EeroCad',
+  name: 'EeroCad',
+  /*
+   * The spelling the brand does not use in its logo but does use everywhere
+   * it is typed: the domain, the mailbox and the Instagram handle are all
+   * `eerocad`, and the previous site wrote it that way throughout. People
+   * will search it in that form, so it stays a real alternate name rather
+   * than a copy of the one above.
+   */
+  alternateName: 'Eerocad',
   url: abs('/'),
   logo: LOGO,
   image: LOGO.url,
   slogan: 'Your Vision, Amplified.',
   description:
-    'Eerocad is a remote-first digital agency serving clients across the United Kingdom, providing website development, SEO, performance marketing and social media management.',
+    'EeroCad is a remote-first digital agency serving clients across the United Kingdom, providing website development, SEO, performance marketing and social media management.',
   email: 'info@eerocad.com',
   knowsAbout: [
     'Website development',
@@ -97,7 +109,7 @@ export const organization = {
 export const orgRef = () => ({
   '@type': 'Organization',
   '@id': ID.org,
-  name: 'Eerocad',
+  name: 'EeroCad',
   url: abs('/'),
   logo: LOGO.url,
 });
@@ -106,8 +118,8 @@ export const website = {
   '@type': 'WebSite',
   '@id': ID.site,
   url: abs('/'),
-  name: 'Eerocad',
-  alternateName: 'EeroCad',
+  name: 'EeroCad',
+  alternateName: 'Eerocad',
   inLanguage: 'en-GB',
   publisher: { '@id': ID.org },
   // No SearchAction: there is no site search, and Google removed the

@@ -42,7 +42,7 @@ const toc = headings.filter((h) => h.depth === 2);
 ---
 
 <BaseLayout
-  title={`${post.data.title} | Eerocad`}
+  title={`${post.data.title} | EeroCad`}
   description={post.data.description}
   type="article"
   graph={graph}
@@ -61,7 +61,7 @@ const toc = headings.filter((h) => h.depth === 2);
 
           {/* Byline and dates on every post. The old site had neither anywhere. */}
           <p class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-            <span>By {post.data.author?.name ?? 'Eerocad'}</span>
+            <span>By {post.data.author?.name ?? 'EeroCad'}</span>
             <span aria-hidden="true">·</span>
             <time datetime={post.data.pubDate.toISOString()}>
               {dateFmt.format(post.data.pubDate)}

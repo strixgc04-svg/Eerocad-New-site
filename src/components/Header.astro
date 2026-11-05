@@ -19,13 +19,17 @@ const nav = [
       class="pointer-events-auto flex items-center justify-between gap-3 rounded-full border border-border bg-white/80 py-2 pr-2 pl-4 backdrop-blur-xl sm:pl-6"
       style="box-shadow: var(--shadow-float);"
     >
-      <a
-        href="/"
-        class="flex min-h-11 items-center gap-2 font-semibold tracking-tight"
-        aria-label="Eerocad home"
-      >
-        <span class="inline-block h-2 w-6 rounded-full bg-primary" aria-hidden="true"></span>
-        <span class="text-lg">Eerocad</span>
+      <a href="/" class="flex min-h-11 items-center" aria-label="EeroCad home">
+        {/* aria-label already names the link, so the mark is decorative here.
+            alt="" stops it being announced a second time. */}
+        <img
+          src="/brand/eerocad-wordmark.png"
+          alt=""
+          width="480"
+          height="126"
+          class="h-7 w-auto"
+          fetchpriority="high"
+        />
       </a>
 
       <nav aria-label="Main" class="hidden items-center gap-0.5 md:flex">
