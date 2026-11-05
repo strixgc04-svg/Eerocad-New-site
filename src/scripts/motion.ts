@@ -174,27 +174,34 @@ mm.add(`${MOTION.ok} and (max-width: 639px)`, () => {
 
 /* ------------------------------------------------ process rail progress */
 
+/*
+ * Every rail on the page, not the first one. This was a single
+ * querySelector, which was true while only the home page had a rail; the
+ * service pages draw their process the same way, and the second rail would
+ * have sat at scaleY(0) for the life of the page.
+ */
 mm.add(MOTION.ok, () => {
-  const rail = document.querySelector<HTMLElement>('[data-rail]');
-  const progress = document.querySelector<HTMLElement>('[data-rail-progress]');
-  if (!rail || !progress) return;
+  document.querySelectorAll<HTMLElement>('[data-rail]').forEach((rail) => {
+    const progress = rail.querySelector<HTMLElement>('[data-rail-progress]');
+    if (!progress) return;
 
-  gsap.set(progress, { height: '100%' });
+    gsap.set(progress, { height: '100%' });
 
-  gsap.fromTo(
-    progress,
-    { scaleY: 0 },
-    {
-      scaleY: 1,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: rail,
-        start: 'top 70%',
-        end: 'bottom 75%',
-        scrub: 0.6,
+    gsap.fromTo(
+      progress,
+      { scaleY: 0 },
+      {
+        scaleY: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: rail,
+          start: 'top 70%',
+          end: 'bottom 75%',
+          scrub: 0.6,
+        },
       },
-    },
-  );
+    );
+  });
 });
 
 /* ------------------------------------------------------------- parallax */

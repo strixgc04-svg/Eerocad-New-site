@@ -9,6 +9,8 @@ interface Props {
   heading: string;
   /** Rendered in the accent italic face. Appended to the heading. */
   headingAccent?: string;
+  /** Small kicker above the H1. */
+  eyebrow?: string;
   lead?: string;
   path: string;
   crumbs: Crumb[];
@@ -22,6 +24,7 @@ const {
   description,
   heading,
   headingAccent,
+  eyebrow,
   lead,
   path,
   crumbs,
@@ -47,12 +50,29 @@ const graph = [
     <div class="relative">
       <Breadcrumbs crumbs={crumbs} />
 
-      <div class="container-page pt-8">
-        <h1 class="display-lg max-w-4xl text-balance">
-          {heading}{' '}
-          {headingAccent && <span class="accent-italic text-primary">{headingAccent}</span>}
-        </h1>
-        {lead && <p class="mt-6 max-w-2xl text-lg text-muted-foreground">{lead}</p>}
+      {/*
+        The hero is one column unless a page fills the `aside` slot. Every
+        page but the service pages leaves it empty and lays out exactly as
+        before; those put their sibling services in the right-hand half,
+        which was otherwise a third of a screen of nothing.
+      */}
+      <div class="container-page grid gap-10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-16">
+        <div>
+          {eyebrow && <p class="eyebrow mb-5">{eyebrow}</p>}
+          <h1 class="display-lg max-w-4xl text-balance">
+            {heading}{' '}
+            {headingAccent && <span class="accent-italic text-primary">{headingAccent}</span>}
+          </h1>
+          {lead && <p class="mt-6 max-w-2xl text-lg text-muted-foreground">{lead}</p>}
+        </div>
+
+        {/*
+          Slotted straight into the grid with no wrapper, so the slotted
+          element is itself the grid item. A wrapper would stay a grid item
+          when its contents hide at a breakpoint, and the row gap would open
+          under the lead with nothing beneath it. Sizing belongs to the page.
+        */}
+        <slot name="aside" />
       </div>
     </div>
   </section>
