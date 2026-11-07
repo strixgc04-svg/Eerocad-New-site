@@ -115,10 +115,18 @@ const cardClass = 'folder card-panel block aspect-[7/6] lg:aspect-[5/4]';
               hidden from assistive tech, because it is the work. The
               placeholder is, because "Project imagery" is not.
 
-              The image is inset past the sheet on every side so the parallax
-              has somewhere to travel without exposing an edge.
+              The image is taller than the sheet, anchored above it, so the
+              parallax has somewhere to travel without exposing an edge.
+              Only the vertical needs headroom: the parallax is yPercent.
+
+              No background behind a screenshot — the pocket tint shows
+              through until the lazy image arrives, which is a better
+              holding colour than a white rectangle.
             */}
-            <div class="folder__sheet bg-paper" aria-hidden={p.shot ? undefined : 'true'}>
+            <div
+              class:list={['folder__sheet', !p.shot && 'bg-paper']}
+              aria-hidden={p.shot ? undefined : 'true'}
+            >
               {p.shot ? (
                 <img
                   src={p.shot}
@@ -128,7 +136,7 @@ const cardClass = 'folder card-panel block aspect-[7/6] lg:aspect-[5/4]';
                   data-parallax
                   loading="lazy"
                   decoding="async"
-                  class="absolute -top-[8%] -left-[8%] h-[116%] w-[116%] object-cover object-top"
+                  class="absolute -top-[7%] left-0 h-[114%] w-full object-cover object-top"
                 />
               ) : (
                 <>
@@ -136,10 +144,10 @@ const cardClass = 'folder card-panel block aspect-[7/6] lg:aspect-[5/4]';
                     data-parallax
                     class="absolute inset-[-12%] bg-[radial-gradient(55%_55%_at_50%_40%,rgb(211_47_47_/_0.08),transparent_70%)]"
                   />
-                  {/* Centred on the part of the sheet the flap does not cover,
-                      not on the sheet, so the label clears the flap's edge in
-                      both the tucked and the drawn-out position. */}
-                  <div class="absolute inset-x-0 top-0 grid h-[56%] place-items-center">
+                  {/* Centred on the part of the sheet the flap does not
+                      cover, not on the sheet, so the label sits in the
+                      middle of what you can actually see. */}
+                  <div class="absolute inset-x-0 top-0 grid h-[64%] place-items-center">
                     <span class="eyebrow">Project imagery</span>
                   </div>
                 </>

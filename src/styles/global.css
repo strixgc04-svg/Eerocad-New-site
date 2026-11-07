@@ -537,32 +537,31 @@
   --folder-lip: 50%;
   --folder-face-min: 10.5rem;
   --folder-open: 0.625rem;
-  --folder-lift: 1.5rem;
 
   position: relative;
   overflow: hidden;
   isolation: isolate;
-
-  @media (width >= 40rem) {
-    --folder-lift: 2rem;
-  }
 }
 
 /*
- * The sheet is only rotated in the tucked position, and tucked means pushed
- * down, so the corners the rotation lifts always have the top inset plus
- * `--folder-lift` to rise into. Drawn out it sits square, which is why the
- * top inset can be this small without a corner clipping the card.
+ * The sheet is full-bleed: it runs to the card's edges and the card's own
+ * radius and overflow clip it, so the flap and its tab read as sitting ON
+ * the work rather than beside it.
+ *
+ * It was inset and tilted, which left a band of pocket tint around every
+ * image and shrank a screenshot to about half the space the card had for
+ * it. A tilt also cannot survive going full-bleed — the corners the
+ * rotation lifts would swing off the card and show the tint behind.
+ *
+ * Height is 78% against a flap lip of 50%, so the lower third of the image
+ * sits behind the flap and the flap sliding down on hover uncovers more of
+ * it rather than less.
  */
 .folder__sheet {
   position: absolute;
   z-index: 1;
-  inset: 6% 9% 26%;
+  inset: 0 0 22%;
   overflow: hidden;
-  border-radius: 1rem;
-  box-shadow: 0 2px 12px -4px rgb(10 10 10 / 0.22);
-  transform: translateY(var(--folder-lift)) rotate(-3deg) scale(0.95);
-  transform-origin: 50% 100%;
 }
 
 .folder__face {
@@ -631,9 +630,15 @@
 /* Opening is a pointer gesture. On touch the rest state is the design, so
    a card is never left stuck half-open by a tap that was meant as a scroll. */
 @media (hover: hover) and (pointer: fine) {
+  /*
+   * The sheet scales rather than travels, because full-bleed leaves nowhere
+   * to travel to. The scale goes on the sheet and not on the image inside
+   * it: GSAP owns the image's transform for the parallax, and a CSS
+   * transform on the same element would be overwritten on the next frame.
+   */
   .folder:hover .folder__sheet,
   .folder:focus-within .folder__sheet {
-    transform: translateY(0) rotate(0deg) scale(1);
+    transform: scale(1.04);
   }
 
   .folder:hover .folder__face,
