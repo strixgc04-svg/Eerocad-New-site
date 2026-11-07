@@ -19,6 +19,28 @@ import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
+/*
+ * A phone's URL bar collapses and expands as you scroll, which changes
+ * innerHeight and makes ScrollTrigger recalculate every start position
+ * mid-gesture. Nothing on this site is pinned and no trigger depends on
+ * viewport height to the pixel, so that work buys nothing and lands in the
+ * middle of a scroll.
+ */
+ScrollTrigger.config({ ignoreMobileResize: true });
+
+/*
+ * How far into the viewport an element is when its entrance STARTS.
+ *
+ * These were 88% and 90% — a tenth of a screen above the fold — against
+ * animations lasting 0.7s. Measured on a 390x844 flick, that left elements
+ * at opacity 0 when their top was already 90% up the screen, and still at
+ * 0.5 by three-quarters. Content you were looking at was not there yet.
+ *
+ * Starting at the fold and finishing faster means an entrance is over
+ * before the element reaches a comfortable reading position.
+ */
+const ENTER = 'top 98%';
+
 const mm = gsap.matchMedia();
 const EASE = 'power3.out';
 
@@ -112,7 +134,7 @@ mm.add(
     targets.forEach((el) => {
       ScrollTrigger.create({
         trigger: el,
-        start: 'top 88%',
+        start: ENTER,
         once: true,
         onEnter: () => el.classList.add('is-revealed'),
       });
@@ -120,7 +142,7 @@ mm.add(
 
     requestAnimationFrame(() => {
       targets.forEach((el) => {
-        if (el.getBoundingClientRect().top < window.innerHeight * 0.88) {
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.98) {
           el.classList.add('is-revealed');
         }
       });
@@ -142,10 +164,10 @@ mm.add(`${MOTION.ok} and (min-width: 640px)`, () => {
     gsap.from(items, {
       y: 28,
       opacity: 0,
-      duration: 0.7,
+      duration: 0.6,
       ease: EASE,
       stagger: 0.08,
-      scrollTrigger: { trigger: group, start: 'top 82%', once: true },
+      scrollTrigger: { trigger: group, start: 'top 90%', once: true },
     });
   });
 });
@@ -158,16 +180,21 @@ mm.add(`${MOTION.ok} and (min-width: 640px)`, () => {
  *
  * So each item gets its own trigger, and a little more character than the
  * desktop version: it lifts and scales up fractionally as it enters.
+ *
+ * Shorter and shallower than the desktop version too. A phone is scrolled
+ * in flicks, so an item crosses the screen in a fraction of the time a
+ * trackpad takes, and a long travel reads as the content arriving late
+ * rather than as a flourish.
  */
 mm.add(`${MOTION.ok} and (max-width: 639px)`, () => {
   gsap.utils.toArray<HTMLElement>('[data-stagger-item]').forEach((item) => {
     gsap.from(item, {
-      y: 40,
-      scale: 0.965,
+      y: 22,
+      scale: 0.98,
       opacity: 0,
-      duration: 0.75,
+      duration: 0.45,
       ease: EASE,
-      scrollTrigger: { trigger: item, start: 'top 90%', once: true },
+      scrollTrigger: { trigger: item, start: ENTER, once: true },
     });
   });
 });
