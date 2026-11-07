@@ -16,8 +16,11 @@ const crumbs = [
 // ONE canonical Calendly link site-wide. The old site used two different
 // event links, and the embedded one was returning
 // "A meeting has already been scheduled using this link".
-// VERIFY THIS LINK WORKS BEFORE LAUNCH.
-const CALENDLY = 'https://calendly.com/d/cq33-q2f-bc4';
+//
+// Supplied by the client and checked: it resolves to the 30-minute event.
+// A single-use /d/ link was what broke last time, so this is the named
+// event, which does not expire after one booking.
+const CALENDLY = 'https://calendly.com/eerocad/30min';
 
 const extraGraph = [
   {
