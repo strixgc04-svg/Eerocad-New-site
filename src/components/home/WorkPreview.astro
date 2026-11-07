@@ -33,6 +33,7 @@ const projects = [
     client: 'Dhillon of London',
     sector: 'Luxury transport',
     blurb: 'Brand identity and social content for a luxury coach fleet.',
+    shot: '/brand/work/dhillon-of-london.jpg',
     year: '2024',
     tint: 'from-[#e8d8d2] to-[#dbc8c0]',
   },
@@ -43,6 +44,7 @@ const projects = [
     // Deliberately no city: the current site puts this restaurant in London
     // in the case study and in Birmingham, Michigan in the testimonial.
     blurb: 'Identity and local search for a Japanese fine-dining restaurant.',
+    shot: '/brand/work/adachi.jpg',
     year: '2024',
     tint: 'from-[#e3dfd3] to-[#d3cdbd]',
   },
@@ -51,6 +53,7 @@ const projects = [
     client: 'Ayunik Clothing',
     sector: 'Ecommerce',
     blurb: 'A mobile-first Shopify store for a modest-wear clothing label.',
+    shot: '/brand/work/ayunik.jpg',
     year: '2025',
     tint: 'from-[#eddad5] to-[#ddc5c0]',
   },
@@ -59,6 +62,11 @@ const projects = [
     client: 'Escalate Digital',
     sector: 'B2B marketing',
     blurb: 'Identity, messaging and a new site for a marketing agency.',
+    // No shot: escalatedigital.in serves an expired certificate (SAN covers
+    // the apex only, and it lapsed on 27 Oct 2026), so the site cannot be
+    // reached without turning certificate checking off. Keeps the
+    // placeholder until the certificate is renewed. See docs/content-todo.md.
+    shot: null,
     year: '2024',
     tint: 'from-[#dee1dc] to-[#cdd2cc]',
   },
@@ -98,19 +106,44 @@ const cardClass = 'folder card-panel block aspect-[7/6] lg:aspect-[5/4]';
           <>
             <span class={`absolute inset-0 bg-gradient-to-br ${p.tint}`} aria-hidden="true" />
 
-            {/* The filed item. Swap for a real <Image /> once approved imagery
-                exists — the box is positioned, so CLS stays 0 either way. */}
-            <div class="folder__sheet bg-paper" aria-hidden="true">
-              <div
-                data-parallax
-                class="absolute inset-[-12%] bg-[radial-gradient(55%_55%_at_50%_40%,rgb(211_47_47_/_0.08),transparent_70%)]"
-              />
-              {/* Centred on the part of the sheet the flap does not cover,
-                  not on the sheet, so the label clears the flap's edge in
-                  both the tucked and the drawn-out position. */}
-              <div class="absolute inset-x-0 top-0 grid h-[56%] place-items-center">
-                <span class="eyebrow">Project imagery</span>
-              </div>
+            {/*
+              The filed item: a screenshot of the site itself where one could
+              be taken, the placeholder where it could not. The box is
+              positioned either way, so CLS stays 0.
+
+              The screenshot carries real alt text and the sheet is not
+              hidden from assistive tech, because it is the work. The
+              placeholder is, because "Project imagery" is not.
+
+              The image is inset past the sheet on every side so the parallax
+              has somewhere to travel without exposing an edge.
+            */}
+            <div class="folder__sheet bg-paper" aria-hidden={p.shot ? undefined : 'true'}>
+              {p.shot ? (
+                <img
+                  src={p.shot}
+                  alt={`The ${p.client} website`}
+                  width="1000"
+                  height="625"
+                  data-parallax
+                  loading="lazy"
+                  decoding="async"
+                  class="absolute -top-[8%] -left-[8%] h-[116%] w-[116%] object-cover object-top"
+                />
+              ) : (
+                <>
+                  <div
+                    data-parallax
+                    class="absolute inset-[-12%] bg-[radial-gradient(55%_55%_at_50%_40%,rgb(211_47_47_/_0.08),transparent_70%)]"
+                  />
+                  {/* Centred on the part of the sheet the flap does not cover,
+                      not on the sheet, so the label clears the flap's edge in
+                      both the tucked and the drawn-out position. */}
+                  <div class="absolute inset-x-0 top-0 grid h-[56%] place-items-center">
+                    <span class="eyebrow">Project imagery</span>
+                  </div>
+                </>
+              )}
             </div>
 
             <div class="folder__face">
