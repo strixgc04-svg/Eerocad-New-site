@@ -752,7 +752,15 @@
  * From 40rem up, where there is a real grid, they become cards.
  * ===================================================================== */
 
-/* Text content that only needs a box once it sits in a grid. */
+/*
+ * Text content that only needs a box once it sits in a grid.
+ *
+ * Note the breakpoint: this becomes a bordered, rounded, shadowed box at
+ * 40rem. Any grid stacking these therefore needs a gap from 40rem too, not
+ * from whichever breakpoint it happens to go multi-column at. Three grids
+ * went to a gap only at lg and stacked two 28px-radius boxes flush against
+ * each other for the whole 640-1024px range.
+ */
 @utility card-soft {
   padding-block: 1.5rem;
 
