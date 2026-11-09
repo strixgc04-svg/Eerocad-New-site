@@ -62,6 +62,37 @@ const notUs = [
   pageType="AboutPage"
   extraGraph={extraGraph}
 >
+  {/*
+    The founder, in the hero's right-hand half — the same slot the service
+    pages use, which exists because that half was empty on every page that
+    has one.
+
+    Shown at every size rather than desktop-only. The service pages put a
+    navigation card there, which a phone does not need twice; a face is the
+    one thing on this site that says a person is behind it, and the page it
+    sits on is the one a visitor opens to find that out.
+
+    No name on it yet: see docs/content-todo.md.
+  */}
+  <figure
+    slot="aside"
+    class="card-panel w-full max-w-64 overflow-hidden lg:w-80 lg:max-w-none lg:justify-self-end"
+    data-reveal
+  >
+    <img
+      src="/brand/founder.jpg"
+      alt="EeroCad's founder"
+      width="576"
+      height="720"
+      class="aspect-[4/5] w-full object-cover"
+      decoding="async"
+    />
+    <figcaption class="flex items-center gap-2.5 border-t border-border px-5 py-4">
+      <span class="size-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true"></span>
+      <span class="eyebrow">Founder</span>
+    </figcaption>
+  </figure>
+
   <section aria-labelledby="how-heading">
     <h2 id="how-heading" class="display-lg max-w-2xl text-balance" data-reveal>
       How we <span class="accent-italic text-primary">work</span>.
