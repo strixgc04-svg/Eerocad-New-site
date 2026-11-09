@@ -54,6 +54,19 @@ export const organization = {
   url: abs('/'),
   logo: LOGO,
   image: LOGO.url,
+  /*
+   * A named person on the Organization. Until now nothing on this site
+   * identified anybody — no byline, no team, no founder — which is the
+   * plainest E-E-A-T gap it had. Given as a first name because that is
+   * what we have been told; a surname can be added without changing
+   * anything else here.
+   */
+  founder: {
+    '@type': 'Person',
+    name: 'Yatharth',
+    jobTitle: 'Founder',
+    worksFor: { '@id': ID.org },
+  },
   slogan: 'Your Vision, Amplified.',
   description:
     'EeroCad is a remote-first digital agency serving clients across the United Kingdom, providing website development, SEO, performance marketing and social media management.',
