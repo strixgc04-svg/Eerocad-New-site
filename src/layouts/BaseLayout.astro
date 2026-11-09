@@ -5,6 +5,7 @@ import JsonLd from '@/components/JsonLd.astro';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import { organization, website } from '@/lib/schema';
+import { GTM_ID } from '@/lib/site.js';
 
 interface Props {
   title: string;
@@ -20,6 +21,35 @@ interface Props {
 
 const { title, description, image, noindex, type, graph = [], intro = false } =
   Astro.props;
+
+/*
+ * Built as a string and injected with set:html, not written inline in the
+ * template.
+ *
+ * Inside an Astro expression the children of <script> are still parsed as
+ * JSX, so every `{` in the JS opens an expression. Written literally it
+ * compiled to `{\`...\`}` — a block statement holding a template literal,
+ * which is valid JavaScript that evaluates a string and throws it away. The
+ * tag shipped, the snippet never ran, and nothing about the page looked
+ * wrong. Only reading the built HTML showed it.
+ */
+const gtm =
+  GTM_ID && import.meta.env.PROD
+    ? `window.dataLayer = window.dataLayer || [];
+function gtag(){ dataLayer.push(arguments); }
+gtag('consent','default',{
+  ad_storage:'denied',
+  ad_user_data:'denied',
+  ad_personalization:'denied',
+  analytics_storage:'denied',
+  security_storage:'granted',
+  wait_for_update:500
+});
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`
+    : '';
 ---
 
 <!doctype html>
@@ -46,6 +76,26 @@ const { title, description, image, noindex, type, graph = [], intro = false } =
       type="font/woff2"
       crossorigin
     />
+
+    {/*
+      Google Tag Manager.
+
+      Production only: a dev server reloads constantly and would report every
+      one of those into the live container.
+
+      The consent defaults run BEFORE the loader, and that ordering is the
+      whole point — Consent Mode has to be set before the tag it governs, or
+      the tag has already acted. Everything non-essential starts denied, so
+      GTM loads but sets no analytics or advertising cookie until something
+      calls gtag('consent','update',...). There is no cookie banner on this
+      site yet, and under PECR consent has to come before the cookie rather
+      than after it. `gtag` is left on window for that banner to call.
+
+      The snippet supplied was a gtag/GTM hybrid: the gtm.js loader with
+      gtag.js bootstrap lines, no container config and no <noscript>. This
+      is GTM's own snippet instead.
+    */}
+    {gtm && <script is:inline set:html={gtm} />}
 
     <SeoHead
       title={title}
@@ -77,6 +127,20 @@ const { title, description, image, noindex, type, graph = [], intro = false } =
   </head>
 
   <body class="min-h-dvh antialiased">
+    {
+      GTM_ID && import.meta.env.PROD && (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="Google Tag Manager"
+          />
+        </noscript>
+      )
+    }
+
     {
       intro && (
         <div class="intro" aria-hidden="true" data-intro>

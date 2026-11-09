@@ -6,8 +6,14 @@ import PageLayout from '@/layouts/PageLayout.astro';
  * downloaded template. The previous site's policy was an unedited template
  * that named support@landin.com as its contact.
  *
- * It MUST be revised when any of these land: an enquiry form, analytics, an
- * advertising pixel, or a cookie banner. See docs/content-todo.md.
+ * Revised 2026-11-09 when Google Tag Manager was added. It MUST be revised
+ * again when any of these land: an enquiry form, a cookie banner, or any
+ * consent category moving off `denied`. See docs/content-todo.md.
+ *
+ * The claims here are load-bearing. Everything this page says about Tag
+ * Manager is true only while the Consent Mode defaults in BaseLayout stay
+ * denied; change those and this copy is a false statement to a UK regulator,
+ * not a stale sentence.
  */
 const path = '/privacy-policy/';
 const title = 'Privacy Policy | EeroCad';
@@ -19,7 +25,7 @@ const crumbs = [
   { name: 'Privacy Policy', path },
 ];
 
-const updated = '2 November 2026';
+const updated = '9 November 2026';
 ---
 
 <PageLayout
@@ -34,16 +40,33 @@ const updated = '2 November 2026';
   <div class="prose-page max-w-2xl">
     <h2>The short version</h2>
     <p>
-      This website does not set analytics or advertising cookies, and it has no
-      forms. If you email us or book a call, we hold what you send us so we can
-      reply. We do not sell or rent anyone's data.
+      This website loads Google Tag Manager, but it is set to store nothing
+      until you agree to it, so no analytics or advertising cookies are set on
+      your device today. The site has no forms. If you email us or book a call,
+      we hold what you send us so we can reply. We do not sell or rent anyone's
+      data.
     </p>
 
     <h2>What this site collects</h2>
     <p>
-      Browsing these pages involves no tracking cookies and no analytics. Our
-      hosting provider keeps standard server logs, which include IP addresses,
-      for security and reliability purposes.
+      We load Google Tag Manager on every page. It is configured with Google
+      Consent Mode, and every non-essential category &mdash; analytics,
+      advertising, advertising personalisation and advertising user data
+      &mdash; is set to <em>denied</em> by default. Nothing changes that
+      default at present, so Tag Manager sets no cookie and reads nothing from
+      your device.
+    </p>
+    <p>
+      Loading it does mean your browser requests a file from Google's servers
+      at <span class="font-mono text-sm">googletagmanager.com</span>, and that
+      request carries your IP address and browser details in the ordinary way
+      any request does. Google processes that under its own terms. If we later
+      turn on analytics properly, we will ask you first, and this page will say
+      so before it happens.
+    </p>
+    <p>
+      Our hosting provider keeps standard server logs, which include IP
+      addresses, for security and reliability purposes.
     </p>
     <p>
       The site stores one item in your browser's session storage to remember
@@ -86,9 +109,10 @@ const updated = '2 November 2026';
 
     <h2>Changes</h2>
     <p>
-      If we add an enquiry form, analytics or advertising tracking to this site,
-      this policy will be updated before those go live, and a cookie notice will
-      be added where one is required.
+      If we add an enquiry form, or switch on analytics or advertising tracking
+      rather than loading it in the denied state described above, this policy
+      will be updated before that goes live, and a cookie notice will be added
+      where one is required.
     </p>
 
     <h2>Contact</h2>
