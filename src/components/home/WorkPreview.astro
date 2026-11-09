@@ -62,11 +62,12 @@ const projects = [
     client: 'Escalate Digital',
     sector: 'B2B marketing',
     blurb: 'Identity, messaging and a new site for a marketing agency.',
-    // No shot: escalatedigital.in serves an expired certificate (SAN covers
-    // the apex only, and it lapsed on 27 Oct 2026), so the site cannot be
-    // reached without turning certificate checking off. Keeps the
-    // placeholder until the certificate is renewed. See docs/content-todo.md.
-    shot: null,
+    // Supplied by the client rather than captured here: escalatedigital.in
+    // serves a certificate that expired on 27 Oct 2026, whose SAN covers
+    // the apex only, so the site cannot be reached without turning
+    // certificate checking off. The placeholder branch below stays for the
+    // next entry that has no image. See docs/content-todo.md item 7.
+    shot: '/brand/work/escalate.jpg',
     year: '2024',
     tint: 'from-[#dee1dc] to-[#cdd2cc]',
   },
