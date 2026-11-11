@@ -45,10 +45,25 @@ gtag('consent','default',{
   security_storage:'granted',
   wait_for_update:500
 });
-(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`
+(function(w,d,s,l,i){
+  var done=false;
+  function load(){
+    if(done) return; done=true;
+    w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  }
+  function schedule(){
+    if(w.requestIdleCallback) w.requestIdleCallback(load,{timeout:2500});
+    else w.setTimeout(load,1200);
+  }
+  ['pointerdown','keydown','touchstart','scroll'].forEach(function(e){
+    w.addEventListener(e,load,{once:true,passive:true});
+  });
+  if(d.readyState==='complete') schedule();
+  else w.addEventListener('load',schedule,{once:true});
+})(window,document,'script','dataLayer','${GTM_ID}');`
     : '';
 ---
 
@@ -94,6 +109,17 @@ f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID
       The snippet supplied was a gtag/GTM hybrid: the gtm.js loader with
       gtag.js bootstrap lines, no container config and no <noscript>. This
       is GTM's own snippet instead.
+
+      The loader is deferred off the critical path. Measured on the live
+      site, gtm.js is 178 KiB — 44% of the page and the largest request on
+      it by a factor of three — and it was holding LCP at 3.3s. It now
+      loads on whichever comes first: the first real interaction
+      (pointerdown, keydown, touchstart, scroll), or an idle callback after
+      the load event, capped at 2.5s so a page nobody touches still reports.
+
+      The consent defaults above are NOT deferred, and must never be: they
+      have to be in the dataLayer before gtm.js arrives, and deferring the
+      loader only widens that margin.
     */}
     {gtm && <script is:inline set:html={gtm} />}
 
